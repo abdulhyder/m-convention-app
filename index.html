@@ -16,209 +16,121 @@
 body{
   background:#f4f6fb;
   color:#222;
+  padding-bottom:75px;
 }
 
 header{
   background:linear-gradient(135deg,#7b1fa2,#e91e63);
   color:white;
-  padding:20px;
+  padding:18px;
   position:sticky;
   top:0;
   z-index:10;
 }
 
 .header-title{
-  font-size:27px;
+  font-size:25px;
   font-weight:bold;
 }
 
 .header-sub{
-  margin-top:5px;
+  font-size:13px;
   opacity:.9;
+  margin-top:4px;
 }
 
 .container{
-  padding:16px;
-  padding-bottom:90px;
+  max-width:1100px;
+  margin:auto;
+  padding:15px;
 }
 
 .logo{
-  width:75px;
-  height:75px;
+  width:70px;
+  height:70px;
   border-radius:50%;
   background:white;
   color:#e91e63;
   display:flex;
   align-items:center;
   justify-content:center;
-  font-size:45px;
+  font-size:40px;
   font-weight:bold;
-  margin:10px auto 18px;
-  box-shadow:0 5px 15px #bbb;
+  margin:10px auto 20px;
+  box-shadow:0 5px 20px #bbb;
 }
 
-.cards{
+.stats{
   display:grid;
-  grid-template-columns:1fr 1fr;
+  grid-template-columns:repeat(4,1fr);
   gap:12px;
 }
 
 .card{
   background:white;
+  border-radius:15px;
   padding:18px;
-  border-radius:16px;
-  box-shadow:0 3px 10px #ddd;
+  box-shadow:0 3px 12px #ddd;
 }
 
-.card h3{
-  font-size:14px;
+.stat-title{
   color:#777;
+  font-size:13px;
 }
 
-.card p{
-  font-size:25px;
+.stat-value{
+  font-size:24px;
   font-weight:bold;
   margin-top:8px;
 }
 
-.section{
-  margin-top:20px;
-}
-
-.section-title{
-  font-size:20px;
-  font-weight:bold;
-  margin-bottom:12px;
-}
-
-button{
-  border:0;
-  border-radius:10px;
-  padding:12px 16px;
-  font-size:15px;
-  cursor:pointer;
-}
-
-.primary{
-  background:#e91e63;
-  color:white;
-  width:100%;
-  margin-top:10px;
-}
-
-.green{
-  background:#2e7d32;
-  color:white;
-}
-
-.red{
-  background:#d32f2f;
-  color:white;
-}
-
-.blue{
-  background:#1976d2;
-  color:white;
-}
-
-.list-item{
-  background:white;
-  margin-bottom:10px;
-  padding:15px;
-  border-radius:13px;
-  box-shadow:0 2px 8px #ddd;
-}
-
-.list-item strong{
-  font-size:17px;
-}
-
-.list-item small{
-  display:block;
-  margin-top:5px;
-  color:#777;
-}
-
-input,select,textarea{
-  width:100%;
-  padding:13px;
-  border:1px solid #ddd;
-  border-radius:10px;
-  margin:7px 0 12px;
-  font-size:15px;
-}
-
-textarea{
-  min-height:90px;
-}
-
-.form{
-  background:white;
-  padding:18px;
-  border-radius:16px;
-  box-shadow:0 3px 10px #ddd;
-}
-
-.nav{
-  position:fixed;
-  bottom:0;
-  left:0;
-  right:0;
-  height:70px;
-  background:white;
-  display:flex;
-  justify-content:space-around;
-  align-items:center;
-  box-shadow:0 -3px 15px #ccc;
-  z-index:20;
-}
-
-.nav button{
-  background:none;
-  color:#555;
-  padding:7px;
-  font-size:12px;
-}
-
-.nav button.active{
-  color:#e91e63;
-  font-weight:bold;
-}
-
-.page{
-  display:none;
-}
-
-.page.active{
-  display:block;
-}
-
-.calendar{
-  background:white;
-  padding:15px;
-  border-radius:16px;
-  box-shadow:0 3px 10px #ddd;
+.dashboard-title{
+  margin:25px 0 12px;
+  font-size:21px;
 }
 
 .calendar-head{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  margin-bottom:15px;
-  font-weight:bold;
+  margin-bottom:12px;
 }
 
-.days{
+.calendar-head button{
+  border:0;
+  background:#e91e63;
+  color:white;
+  padding:8px 14px;
+  border-radius:8px;
+  font-size:18px;
+}
+
+.calendar{
   display:grid;
   grid-template-columns:repeat(7,1fr);
   gap:5px;
+}
+
+.day-name{
   text-align:center;
+  font-weight:bold;
+  color:#777;
+  padding:8px 2px;
+  font-size:12px;
 }
 
 .day{
-  padding:10px 3px;
+  min-height:48px;
+  background:#fafafa;
   border-radius:8px;
-  font-size:13px;
+  padding:7px;
+  text-align:center;
+  cursor:pointer;
+  border:1px solid #eee;
+}
+
+.day:hover{
+  background:#fce4ec;
 }
 
 .booked{
@@ -228,24 +140,208 @@ textarea{
 }
 
 .today{
-  border:2px solid #1976d2;
+  border:2px solid #7b1fa2;
 }
 
-.action-row{
+button{
+  cursor:pointer;
+}
+
+.primary{
+  width:100%;
+  border:0;
+  background:linear-gradient(135deg,#e91e63,#7b1fa2);
+  color:white;
+  padding:15px;
+  border-radius:12px;
+  font-size:16px;
+  font-weight:bold;
+  margin:15px 0;
+}
+
+.section{
+  display:none;
+}
+
+.section.active{
+  display:block;
+}
+
+.form-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px;
+}
+
+label{
+  font-size:13px;
+  color:#555;
+  display:block;
+  margin-bottom:5px;
+}
+
+input,select,textarea{
+  width:100%;
+  padding:12px;
+  border:1px solid #ddd;
+  border-radius:9px;
+  font-size:15px;
+}
+
+textarea{
+  min-height:80px;
+}
+
+.booking{
+  margin-bottom:12px;
+}
+
+.booking-top{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+}
+
+.booking-name{
+  font-weight:bold;
+  font-size:18px;
+}
+
+.badge{
+  background:#e8f5e9;
+  color:#2e7d32;
+  padding:5px 9px;
+  border-radius:20px;
+  font-size:12px;
+}
+
+.small{
+  color:#777;
+  font-size:13px;
+  margin-top:5px;
+}
+
+.actions{
   display:flex;
   gap:8px;
-  margin-top:10px;
+  margin-top:12px;
 }
 
-.action-row button{
-  flex:1;
-  padding:9px;
+.actions button{
+  border:0;
+  padding:8px 12px;
+  border-radius:7px;
+}
+
+.edit{
+  background:#fff3e0;
+}
+
+.delete{
+  background:#ffebee;
+  color:#c62828;
 }
 
 .empty{
   text-align:center;
-  padding:30px;
   color:#888;
+  padding:30px;
+}
+
+nav{
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  height:68px;
+  background:white;
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  box-shadow:0 -3px 15px #ddd;
+  z-index:20;
+}
+
+nav button{
+  border:0;
+  background:white;
+  color:#777;
+  font-size:11px;
+}
+
+nav button.active{
+  color:#e91e63;
+  font-weight:bold;
+}
+
+nav span{
+  display:block;
+  font-size:22px;
+  margin-bottom:3px;
+}
+
+.table-wrap{
+  overflow-x:auto;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  background:white;
+}
+
+th,td{
+  padding:11px;
+  border-bottom:1px solid #eee;
+  text-align:left;
+  font-size:13px;
+}
+
+th{
+  background:#f7f7f7;
+}
+
+.modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:#0008;
+  z-index:50;
+  padding:20px;
+}
+
+.modal-box{
+  background:white;
+  max-width:600px;
+  margin:40px auto;
+  border-radius:18px;
+  padding:20px;
+  max-height:90vh;
+  overflow:auto;
+}
+
+.close{
+  float:right;
+  border:0;
+  background:#eee;
+  border-radius:50%;
+  width:35px;
+  height:35px;
+  font-size:20px;
+}
+
+@media(max-width:700px){
+  .stats{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .form-grid{
+    grid-template-columns:1fr;
+  }
+
+  .day{
+    min-height:42px;
+    font-size:13px;
+  }
 }
 </style>
 </head>
@@ -254,1043 +350,953 @@ textarea{
 
 <header>
   <div class="header-title">M Convention</div>
-  <div class="header-sub">Booking & Business Management</div>
+  <div class="header-sub">Convention Hall Management</div>
 </header>
 
 <div class="container">
 
-<!-- DASHBOARD -->
-<div id="dashboard" class="page active">
+<!-- HOME -->
+<section id="home" class="section active">
 
-  <div class="logo">M</div>
+<div class="logo">M</div>
 
-  <div class="cards">
+<div class="stats">
 
-    <div class="card">
-      <h3>Today's Bookings</h3>
-      <p id="todayBookings">0</p>
-    </div>
+<div class="card">
+<div class="stat-title">Today Bookings</div>
+<div class="stat-value" id="todayCount">0</div>
+</div>
 
-    <div class="card">
-      <h3>This Month</h3>
-      <p id="monthBookings">0</p>
-    </div>
+<div class="card">
+<div class="stat-title">This Month</div>
+<div class="stat-value" id="monthCount">0</div>
+</div>
 
-    <div class="card">
-      <h3>Received</h3>
-      <p>₹<span id="received">0</span></p>
-    </div>
+<div class="card">
+<div class="stat-title">Received</div>
+<div class="stat-value" id="received">₹0</div>
+</div>
 
-    <div class="card">
-      <h3>Pending</h3>
-      <p>₹<span id="pending">0</span></p>
-    </div>
-
-  </div>
-
-  <button class="primary" onclick="showPage('addBooking')">
-    + ADD NEW BOOKING
-  </button>
-
-  <div class="section">
-    <div class="section-title">Upcoming Events</div>
-    <div id="upcoming"></div>
-  </div>
-
-  <div class="section">
-    <div class="section-title">Calendar</div>
-
-    <div class="calendar">
-
-      <div class="calendar-head">
-        <button onclick="changeMonth(-1)">‹</button>
-        <span id="calendarTitle"></span>
-        <button onclick="changeMonth(1)">›</button>
-      </div>
-
-      <div class="days" id="calendar"></div>
-
-    </div>
-  </div>
+<div class="card">
+<div class="stat-title">Pending</div>
+<div class="stat-value" id="pending">₹0</div>
+</div>
 
 </div>
 
+<button class="primary" onclick="openBooking()">＋ ADD NEW BOOKING</button>
 
-<!-- ADD BOOKING -->
-<div id="addBooking" class="page">
-
-  <div class="section-title">Add Booking</div>
-
-  <div class="form">
-
-    <label>Customer Name</label>
-    <input id="customerName" placeholder="Customer name">
-
-    <label>Phone Number</label>
-    <input id="customerPhone" type="tel" placeholder="Phone number">
-
-    <label>Event Type</label>
-    <select id="eventType">
-      <option>Marriage</option>
-      <option>Reception</option>
-      <option>Birthday</option>
-      <option>Meeting</option>
-      <option>Other</option>
-    </select>
-
-    <label>Event Date</label>
-    <input id="eventDate" type="date">
-
-    <label>Event Time</label>
-    <select id="eventTime">
-      <option>Afternoon</option>
-      <option>Night</option>
-    </select>
-
-    <label>Number of Guests</label>
-    <input id="guests" type="number" placeholder="Guests">
-
-    <label>Total Amount</label>
-    <input id="totalAmount" type="number" placeholder="Total amount">
-
-    <label>Advance Paid</label>
-    <input id="advanceAmount" type="number" placeholder="Advance amount">
-
-    <label>Payment Source</label>
-    <select id="paymentSource">
-      <option>Cash</option>
-      <option>PhonePe</option>
-      <option>Bank Account</option>
-      <option>Other</option>
-    </select>
-
-    <label>Notes</label>
-    <textarea id="bookingNotes" placeholder="Notes"></textarea>
-
-    <button class="green" style="width:100%" onclick="saveBooking()">
-      SAVE BOOKING
-    </button>
-
-  </div>
+<div class="card">
+<div class="calendar-head">
+<button onclick="changeMonth(-1)">‹</button>
+<h3 id="monthTitle"></h3>
+<button onclick="changeMonth(1)">›</button>
 </div>
+
+<div class="calendar" id="calendar"></div>
+</div>
+
+<h2 class="dashboard-title">Upcoming Events</h2>
+<div id="upcoming"></div>
+
+</section>
 
 
 <!-- BOOKINGS -->
-<div id="bookings" class="page">
+<section id="bookings" class="section">
 
-  <div class="section-title">All Bookings</div>
+<h2>Bookings</h2>
 
-  <button class="primary" onclick="showPage('addBooking')">
-    + ADD BOOKING
-  </button>
+<button class="primary" onclick="openBooking()">＋ New Booking</button>
 
-  <div id="bookingList" class="section"></div>
+<div id="bookingList"></div>
 
-</div>
+</section>
 
 
 <!-- CUSTOMERS -->
-<div id="customers" class="page">
+<section id="customers" class="section">
 
-  <div class="section-title">Customers</div>
+<h2>Customers</h2>
 
-  <input id="customerSearch"
-         placeholder="Search by name or phone"
-         oninput="showCustomers()">
-
-  <div id="customerList"></div>
-
+<div class="card" style="margin-top:15px">
+<input id="customerSearch"
+placeholder="Search customer or phone..."
+oninput="showCustomers()">
 </div>
+
+<div id="customerList" style="margin-top:15px"></div>
+
+</section>
 
 
 <!-- EXPENSES -->
-<div id="expenses" class="page">
+<section id="expenses" class="section">
 
-  <div class="section-title">Expenses</div>
+<h2>Expenses</h2>
 
-  <div class="form">
+<button class="primary" onclick="addExpense()">＋ Add Expense</button>
 
-    <label>Purpose</label>
-    <input id="expensePurpose" placeholder="Cleaning, Security, etc.">
-
-    <label>Amount</label>
-    <input id="expenseAmount" type="number" placeholder="Amount">
-
-    <label>Payment Source</label>
-    <select id="expenseSource">
-      <option>Cash</option>
-      <option>PhonePe</option>
-      <option>Bank Account</option>
-    </select>
-
-    <button class="red" style="width:100%" onclick="saveExpense()">
-      ADD EXPENSE
-    </button>
-
-  </div>
-
-  <div id="expenseList" class="section"></div>
-
+<div class="card">
+<h3>Total Expenses</h3>
+<div class="stat-value" id="expenseTotal">₹0</div>
 </div>
 
+<div id="expenseList" style="margin-top:15px"></div>
 
-<!-- STAFF -->
-<div id="staff" class="page">
-
-  <div class="section-title">Staff Management</div>
-
-  <div class="form">
-
-    <label>Staff Name</label>
-    <input id="staffName" placeholder="Staff name">
-
-    <label>Phone</label>
-    <input id="staffPhone" placeholder="Phone number">
-
-    <label>Monthly Salary</label>
-    <input id="staffSalary" type="number" placeholder="Salary">
-
-    <button class="blue" style="width:100%" onclick="saveStaff()">
-      ADD STAFF
-    </button>
-
-  </div>
-
-  <div id="staffList" class="section"></div>
-
-</div>
+</section>
 
 
 <!-- REPORTS -->
-<div id="reports" class="page">
+<section id="reports" class="section">
 
-  <div class="section-title">Reports</div>
+<h2>Reports</h2>
 
-  <div class="cards">
+<div class="stats" style="margin-top:15px">
 
-    <div class="card">
-      <h3>Total Booking Value</h3>
-      <p>₹<span id="reportIncome">0</span></p>
-    </div>
-
-    <div class="card">
-      <h3>Total Expenses</h3>
-      <p>₹<span id="reportExpense">0</span></p>
-    </div>
-
-    <div class="card">
-      <h3>Net Amount</h3>
-      <p>₹<span id="reportProfit">0</span></p>
-    </div>
-
-    <div class="card">
-      <h3>Total Bookings</h3>
-      <p id="reportBookings">0</p>
-    </div>
-
-  </div>
-
+<div class="card">
+<div class="stat-title">Bookings</div>
+<div class="stat-value" id="reportBookings">0</div>
 </div>
 
+<div class="card">
+<div class="stat-title">Income</div>
+<div class="stat-value" id="reportIncome">₹0</div>
+</div>
 
-<!-- NOTES -->
-<div id="notes" class="page">
+<div class="card">
+<div class="stat-title">Expenses</div>
+<div class="stat-value" id="reportExpenses">₹0</div>
+</div>
 
-  <div class="section-title">Notes</div>
-
-  <div class="form">
-
-    <textarea id="noteText" placeholder="Write your note..."></textarea>
-
-    <button class="primary" onclick="saveNote()">
-      SAVE NOTE
-    </button>
-
-  </div>
-
-  <div id="noteList" class="section"></div>
-
+<div class="card">
+<div class="stat-title">Balance</div>
+<div class="stat-value" id="reportBalance">₹0</div>
 </div>
 
 </div>
 
+<div class="card" style="margin-top:15px">
+<h3>Booking Report</h3>
 
-<!-- NAVIGATION -->
-<div class="nav">
+<div class="table-wrap">
+<table>
+<thead>
+<tr>
+<th>Date</th>
+<th>Customer</th>
+<th>Event</th>
+<th>Total</th>
+<th>Paid</th>
+<th>Balance</th>
+</tr>
+</thead>
+<tbody id="reportTable"></tbody>
+</table>
+</div>
 
-  <button onclick="showPage('dashboard')" id="nav-dashboard">
-    🏠<br>Home
-  </button>
+</div>
 
-  <button onclick="showPage('bookings')" id="nav-bookings">
-    📅<br>Bookings
-  </button>
+</section>
 
-  <button onclick="showPage('customers')" id="nav-customers">
-    👥<br>Customers
-  </button>
+</div>
 
-  <button onclick="showPage('expenses')" id="nav-expenses">
-    💸<br>Expenses
-  </button>
 
-  <button onclick="showPage('reports')" id="nav-reports">
-    📊<br>Reports
-  </button>
+<!-- BOTTOM NAV -->
 
+<nav>
+
+<button class="active" onclick="showSection('home',this)">
+<span>🏠</span>Home
+</button>
+
+<button onclick="showSection('bookings',this)">
+<span>📅</span>Bookings
+</button>
+
+<button onclick="showSection('customers',this)">
+<span>👥</span>Customers
+</button>
+
+<button onclick="showSection('expenses',this)">
+<span>💰</span>Expenses
+</button>
+
+<button onclick="showSection('reports',this)">
+<span>📊</span>Reports
+</button>
+
+</nav>
+
+
+<!-- BOOKING MODAL -->
+
+<div class="modal" id="bookingModal">
+
+<div class="modal-box">
+
+<button class="close" onclick="closeBooking()">×</button>
+
+<h2 id="modalTitle">New Booking</h2>
+
+<br>
+
+<div class="form-grid">
+
+<div>
+<label>Customer Name</label>
+<input id="name" placeholder="Customer name">
+</div>
+
+<div>
+<label>Phone Number</label>
+<input id="phone" type="tel" placeholder="Phone number">
+</div>
+
+<div>
+<label>Event Type</label>
+<select id="event">
+<option>Marriage</option>
+<option>Reception</option>
+<option>Birthday</option>
+<option>Meeting</option>
+<option>Engagement</option>
+<option>Other</option>
+</select>
+</div>
+
+<div>
+<label>Event Date</label>
+<input id="date" type="date">
+</div>
+
+<div>
+<label>Event Time</label>
+<select id="time">
+<option>Afternoon</option>
+<option>Night</option>
+</select>
+</div>
+
+<div>
+<label>Number of Guests</label>
+<input id="guests" type="number" placeholder="Guests">
+</div>
+
+<div>
+<label>Total Amount ₹</label>
+<input id="total" type="number" placeholder="Total amount">
+</div>
+
+<div>
+<label>Advance Paid ₹</label>
+<input id="advance" type="number" placeholder="Advance">
+</div>
+
+</div>
+
+<br>
+
+<label>Notes</label>
+<textarea id="notes" placeholder="Additional notes"></textarea>
+
+<button class="primary" onclick="saveBooking()">SAVE BOOKING</button>
+
+</div>
 </div>
 
 
 <script>
 
 let bookings =
-JSON.parse(localStorage.getItem("mBookings") || "[]");
+JSON.parse(localStorage.getItem("mConventionBookings") || "[]");
 
 let expenses =
-JSON.parse(localStorage.getItem("mExpenses") || "[]");
+JSON.parse(localStorage.getItem("mConventionExpenses") || "[]");
 
-let staff =
-JSON.parse(localStorage.getItem("mStaff") || "[]");
+let editId = null;
 
-let notes =
-JSON.parse(localStorage.getItem("mNotes") || "[]");
+let currentMonth = new Date().getMonth();
+let currentYear = new Date().getFullYear();
+
+
+function money(value){
+return "₹" + Number(value || 0).toLocaleString("en-IN");
+}
 
 
 function saveData(){
+localStorage.setItem(
+"mConventionBookings",
+JSON.stringify(bookings)
+);
 
-  localStorage.setItem(
-    "mBookings",
-    JSON.stringify(bookings)
-  );
+localStorage.setItem(
+"mConventionExpenses",
+JSON.stringify(expenses)
+);
+}
 
-  localStorage.setItem(
-    "mExpenses",
-    JSON.stringify(expenses)
-  );
 
-  localStorage.setItem(
-    "mStaff",
-    JSON.stringify(staff)
-  );
+function showSection(id,button){
 
-  localStorage.setItem(
-    "mNotes",
-    JSON.stringify(notes)
-  );
+document.querySelectorAll(".section")
+.forEach(x=>x.classList.remove("active"));
+
+document.getElementById(id)
+.classList.add("active");
+
+document.querySelectorAll("nav button")
+.forEach(x=>x.classList.remove("active"));
+
+button.classList.add("active");
+
+updateAll();
+}
+
+
+function openBooking(id=null){
+
+editId=id;
+
+document.getElementById("bookingModal")
+.style.display="block";
+
+if(id){
+
+let b=bookings.find(x=>x.id===id);
+
+document.getElementById("modalTitle")
+.innerText="Edit Booking";
+
+name.value=b.name;
+phone.value=b.phone;
+event.value=b.event;
+date.value=b.date;
+time.value=b.time;
+guests.value=b.guests;
+total.value=b.total;
+advance.value=b.advance;
+notes.value=b.notes || "";
+
+}else{
+
+document.getElementById("modalTitle")
+.innerText="New Booking";
+
+document.querySelectorAll("#bookingModal input, #bookingModal textarea")
+.forEach(x=>x.value="");
+
+date.value=new Date()
+.toISOString().split("T")[0];
+
+advance.value=0;
+}
 
 }
 
 
-function showPage(page){
+function closeBooking(){
 
-  document
-    .querySelectorAll(".page")
-    .forEach(p => p.classList.remove("active"));
+document.getElementById("bookingModal")
+.style.display="none";
 
-  document
-    .getElementById(page)
-    .classList.add("active");
-
-  updateAll();
-
-  window.scrollTo(0,0);
-
+editId=null;
 }
 
 
 function saveBooking(){
 
-  let name =
-    document.getElementById("customerName").value.trim();
+let booking={
 
-  let phone =
-    document.getElementById("customerPhone").value.trim();
+id:editId || Date.now(),
 
-  let date =
-    document.getElementById("eventDate").value;
+name:name.value.trim(),
 
-  let total =
-    Number(document.getElementById("totalAmount").value) || 0;
+phone:phone.value.trim(),
 
-  let advance =
-    Number(document.getElementById("advanceAmount").value) || 0;
+event:event.value,
 
-  if(!name || !date){
+date:date.value,
 
-    alert("Please enter customer name and event date.");
-    return;
+time:time.value,
 
-  }
+guests:guests.value,
 
-  let sameDate =
-    bookings.filter(b => b.date === date);
+total:Number(total.value || 0),
 
-  if(sameDate.length >= 2){
+advance:Number(advance.value || 0),
 
-    alert("Maximum 2 bookings allowed for one day.");
-    return;
+notes:notes.value.trim()
 
-  }
+};
 
-  let booking = {
 
-    id:Date.now(),
+if(!booking.name || !booking.date){
 
-    name:name,
+alert("Please enter customer name and event date.");
 
-    phone:phone,
+return;
 
-    type:document.getElementById("eventType").value,
+}
 
-    date:date,
 
-    time:document.getElementById("eventTime").value,
+/* Prevent same date + same time slot */
 
-    guests:
-      Number(document.getElementById("guests").value) || 0,
+let duplicate=bookings.find(x=>
+x.id!==booking.id &&
+x.date===booking.date &&
+x.time===booking.time
+);
 
-    total:total,
+if(duplicate){
 
-    advance:advance,
+alert(
+"This time slot is already booked on this date."
+);
 
-    balance:Math.max(total-advance,0),
+return;
 
-    source:
-      document.getElementById("paymentSource").value,
+}
 
-    notes:
-      document.getElementById("bookingNotes").value
 
-  };
+if(editId){
 
-  bookings.push(booking);
+let index=bookings.findIndex(x=>x.id===editId);
 
-  saveData();
+bookings[index]=booking;
 
-  alert("Booking saved successfully!");
+}else{
 
-  document.getElementById("customerName").value="";
-  document.getElementById("customerPhone").value="";
-  document.getElementById("eventDate").value="";
-  document.getElementById("totalAmount").value="";
-  document.getElementById("advanceAmount").value="";
-  document.getElementById("guests").value="";
-  document.getElementById("bookingNotes").value="";
+bookings.push(booking);
 
-  showPage("bookings");
+}
+
+saveData();
+
+closeBooking();
+
+updateAll();
+
+alert("Booking saved successfully.");
 
 }
 
 
 function deleteBooking(id){
 
-  if(confirm("Delete this booking?")){
+if(confirm("Delete this booking?")){
 
-    bookings =
-      bookings.filter(b => b.id !== id);
+bookings=bookings.filter(x=>x.id!==id);
 
-    saveData();
+saveData();
 
-    updateAll();
+updateAll();
 
-  }
+}
+
+}
+
+
+function bookingHTML(b){
+
+let balance=Math.max(0,b.total-b.advance);
+
+return `
+<div class="card booking">
+
+<div class="booking-top">
+
+<div>
+<div class="booking-name">${escapeHTML(b.name)}</div>
+<div class="small">📞 ${escapeHTML(b.phone)}</div>
+</div>
+
+<div class="badge">${escapeHTML(b.event)}</div>
+
+</div>
+
+<div class="small">
+📅 ${formatDate(b.date)}
+&nbsp; • &nbsp;
+🕐 ${escapeHTML(b.time)}
+</div>
+
+<div class="small">
+👥 Guests: ${b.guests || 0}
+</div>
+
+<div style="margin-top:10px">
+<strong>Total:</strong> ${money(b.total)}
+&nbsp;&nbsp;
+<strong>Paid:</strong> ${money(b.advance)}
+&nbsp;&nbsp;
+<strong>Balance:</strong> ${money(balance)}
+</div>
+
+${b.notes ? `<div class="small">📝 ${escapeHTML(b.notes)}</div>` : ""}
+
+<div class="actions">
+
+<button class="edit"
+onclick="openBooking(${b.id})">
+✏️ Edit
+</button>
+
+<button class="delete"
+onclick="deleteBooking(${b.id})">
+🗑 Delete
+</button>
+
+</div>
+
+</div>
+`;
 
 }
 
 
 function showBookings(){
 
-  let box =
-    document.getElementById("bookingList");
+let list=document.getElementById("bookingList");
 
-  if(bookings.length === 0){
+let sorted=[...bookings]
+.sort((a,b)=>a.date.localeCompare(b.date));
 
-    box.innerHTML =
-      '<div class="empty">No bookings yet</div>';
+if(!sorted.length){
 
-    return;
+list.innerHTML='<div class="card empty">No bookings yet.</div>';
 
-  }
+return;
+}
 
-  let sorted =
-    [...bookings].sort((a,b) =>
-      a.date.localeCompare(b.date)
-    );
-
-  box.innerHTML =
-    sorted.map(b => `
-
-      <div class="list-item">
-
-        <strong>${b.name}</strong>
-
-        <small>
-          📅 ${formatDate(b.date)}
-        </small>
-
-        <small>
-          🎉 ${b.type} • ${b.time}
-        </small>
-
-        <small>
-          👥 ${b.guests} guests
-        </small>
-
-        <small>
-          💰 Total ₹${b.total}
-          • Advance ₹${b.advance}
-          • Balance ₹${b.balance}
-        </small>
-
-        <div class="action-row">
-
-          <button class="red"
-            onclick="deleteBooking(${b.id})">
-            Delete
-          </button>
-
-        </div>
-
-      </div>
-
-    `).join("");
+list.innerHTML=sorted.map(bookingHTML).join("");
 
 }
 
 
 function showCustomers(){
 
-  let search =
-    document.getElementById("customerSearch")
-      .value.toLowerCase();
+let search=
+(document.getElementById("customerSearch")?.value || "")
+.toLowerCase();
 
-  let unique = {};
+let customers={};
 
-  bookings.forEach(b => {
+bookings.forEach(b=>{
 
-    if(
-      b.name.toLowerCase().includes(search) ||
-      b.phone.toLowerCase().includes(search)
-    ){
+if(!customers[b.phone]){
 
-      unique[b.phone] = b;
+customers[b.phone]={
+name:b.name,
+phone:b.phone,
+events:0,
+amount:0
+};
 
-    }
+}
 
-  });
+customers[b.phone].events++;
+customers[b.phone].amount+=b.total;
 
-  let box =
-    document.getElementById("customerList");
+});
 
-  let arr =
-    Object.values(unique);
 
-  if(arr.length === 0){
+let arr=Object.values(customers)
+.filter(c=>
+c.name.toLowerCase().includes(search) ||
+c.phone.toLowerCase().includes(search)
+);
 
-    box.innerHTML =
-      '<div class="empty">No customers found</div>';
 
-    return;
+let box=document.getElementById("customerList");
 
-  }
+if(!arr.length){
 
-  box.innerHTML =
-    arr.map(b => `
+box.innerHTML='<div class="card empty">No customers found.</div>';
 
-      <div class="list-item">
+return;
+}
 
-        <strong>${b.name}</strong>
 
-        <small>📞 ${b.phone}</small>
+box.innerHTML=arr.map(c=>`
 
-        <small>
-          Events: ${
-            bookings.filter(x => x.phone === b.phone).length
-          }
-        </small>
+<div class="card" style="margin-bottom:12px">
 
-      </div>
+<h3>${escapeHTML(c.name)}</h3>
 
-    `).join("");
+<div class="small">📞 ${escapeHTML(c.phone)}</div>
+
+<div class="small">
+Events: ${c.events}
+</div>
+
+<div style="margin-top:8px">
+Total business: <strong>${money(c.amount)}</strong>
+</div>
+
+</div>
+
+`).join("");
 
 }
 
 
-function saveExpense(){
+function addExpense(){
 
-  let purpose =
-    document.getElementById("expensePurpose").value.trim();
+let purpose=prompt("Expense purpose:");
 
-  let amount =
-    Number(document.getElementById("expenseAmount").value) || 0;
+if(!purpose)return;
 
-  if(!purpose || !amount){
+let amount=Number(
+prompt("Amount ₹:") || 0
+);
 
-    alert("Enter purpose and amount.");
-    return;
+if(!amount)return;
 
-  }
+expenses.push({
 
-  expenses.push({
+id:Date.now(),
 
-    id:Date.now(),
+purpose:purpose,
 
-    purpose:purpose,
+amount:amount,
 
-    amount:amount,
+date:new Date()
+.toISOString()
+.split("T")[0]
 
-    source:
-      document.getElementById("expenseSource").value,
+});
 
-    date:new Date().toISOString().split("T")[0]
+saveData();
 
-  });
-
-  saveData();
-
-  document.getElementById("expensePurpose").value="";
-  document.getElementById("expenseAmount").value="";
-
-  updateAll();
+updateAll();
 
 }
 
 
 function showExpenses(){
 
-  let box =
-    document.getElementById("expenseList");
+let box=document.getElementById("expenseList");
 
-  if(expenses.length === 0){
+if(!expenses.length){
 
-    box.innerHTML =
-      '<div class="empty">No expenses</div>';
+box.innerHTML=
+'<div class="card empty">No expenses added.</div>';
 
-    return;
+return;
+}
 
-  }
+box.innerHTML=
+expenses.map(e=>`
 
-  box.innerHTML =
-    expenses.map(e => `
+<div class="card" style="margin-bottom:10px">
 
-      <div class="list-item">
+<strong>${escapeHTML(e.purpose)}</strong>
 
-        <strong>${e.purpose}</strong>
+<div class="small">
+${formatDate(e.date)}
+</div>
 
-        <small>
-          💸 ₹${e.amount}
-        </small>
+<div style="margin-top:8px;font-size:18px">
+${money(e.amount)}
+</div>
 
-        <small>
-          ${formatDate(e.date)} • ${e.source}
-        </small>
+</div>
 
-      </div>
-
-    `).join("");
+`).join("");
 
 }
 
 
-function saveStaff(){
+function renderCalendar(){
 
-  let name =
-    document.getElementById("staffName").value.trim();
+let cal=document.getElementById("calendar");
 
-  let phone =
-    document.getElementById("staffPhone").value.trim();
+let first=new Date(
+currentYear,
+currentMonth,
+1
+);
 
-  let salary =
-    Number(document.getElementById("staffSalary").value) || 0;
+let last=new Date(
+currentYear,
+currentMonth+1,
+0
+);
 
-  if(!name){
+document.getElementById("monthTitle")
+.innerText=first.toLocaleDateString(
+"en-IN",
+{
+month:"long",
+year:"numeric"
+}
+);
 
-    alert("Enter staff name.");
-    return;
+cal.innerHTML="";
 
-  }
+[
+"Sun","Mon","Tue","Wed",
+"Thu","Fri","Sat"
+].forEach(d=>{
 
-  staff.push({
+let x=document.createElement("div");
 
-    id:Date.now(),
+x.className="day-name";
 
-    name:name,
+x.innerText=d;
 
-    phone:phone,
+cal.appendChild(x);
 
-    salary:salary
+});
 
-  });
 
-  saveData();
+for(let i=0;i<first.getDay();i++){
 
-  document.getElementById("staffName").value="";
-  document.getElementById("staffPhone").value="";
-  document.getElementById("staffSalary").value="";
-
-  updateAll();
+cal.appendChild(document.createElement("div"));
 
 }
 
 
-function showStaff(){
+for(let day=1;day<=last.getDate();day++){
 
-  let box =
-    document.getElementById("staffList");
+let d=new Date(
+currentYear,
+currentMonth,
+day
+);
 
-  if(staff.length === 0){
+let date=d.toISOString().split("T")[0];
 
-    box.innerHTML =
-      '<div class="empty">No staff added</div>';
+let div=document.createElement("div");
 
-    return;
+div.className="day";
 
-  }
+if(bookings.some(x=>x.date===date)){
 
-  box.innerHTML =
-    staff.map(s => `
-
-      <div class="list-item">
-
-        <strong>${s.name}</strong>
-
-        <small>📞 ${s.phone}</small>
-
-        <small>
-          Monthly Salary: ₹${s.salary}
-        </small>
-
-      </div>
-
-    `).join("");
+div.classList.add("booked");
 
 }
 
+let now=new Date();
 
-function saveNote(){
+if(
+day===now.getDate() &&
+currentMonth===now.getMonth() &&
+currentYear===now.getFullYear()
+){
 
-  let text =
-    document.getElementById("noteText").value.trim();
-
-  if(!text){
-
-    alert("Write a note first.");
-    return;
-
-  }
-
-  notes.push({
-
-    id:Date.now(),
-
-    text:text,
-
-    date:new Date().toLocaleString()
-
-  });
-
-  saveData();
-
-  document.getElementById("noteText").value="";
-
-  updateAll();
+div.classList.add("today");
 
 }
 
+div.innerText=day;
 
-function showNotes(){
+div.onclick=()=>{
 
-  let box =
-    document.getElementById("noteList");
+document.getElementById("date").value=date;
 
-  if(notes.length === 0){
+openBooking();
 
-    box.innerHTML =
-      '<div class="empty">No notes</div>';
+};
 
-    return;
-
-  }
-
-  box.innerHTML =
-    notes.slice().reverse().map(n => `
-
-      <div class="list-item">
-
-        <strong>${n.text}</strong>
-
-        <small>${n.date}</small>
-
-      </div>
-
-    `).join("");
+cal.appendChild(div);
 
 }
 
-
-let calendarDate = new Date();
+}
 
 
 function changeMonth(amount){
 
-  calendarDate.setMonth(
-    calendarDate.getMonth()+amount
-  );
+currentMonth+=amount;
 
-  drawCalendar();
+if(currentMonth<0){
+
+currentMonth=11;
+
+currentYear--;
+
+}
+
+if(currentMonth>11){
+
+currentMonth=0;
+
+currentYear++;
+
+}
+
+renderCalendar();
 
 }
 
 
-function drawCalendar(){
+function showUpcoming(){
 
-  let year =
-    calendarDate.getFullYear();
+let today=
+new Date().toISOString().split("T")[0];
 
-  let month =
-    calendarDate.getMonth();
+let upcoming=bookings
+.filter(x=>x.date>=today)
+.sort((a,b)=>a.date.localeCompare(b.date))
+.slice(0,5);
 
-  let title =
-    calendarDate.toLocaleString(
-      "default",
-      {
-        month:"long",
-        year:"numeric"
-      }
-    );
+let box=document.getElementById("upcoming");
 
-  document.getElementById("calendarTitle")
-    .textContent = title;
+if(!upcoming.length){
 
-  let first =
-    new Date(year,month,1).getDay();
+box.innerHTML=
+'<div class="card empty">No upcoming events.</div>';
 
-  let total =
-    new Date(year,month+1,0).getDate();
-
-  let today =
-    new Date();
-
-  let html="";
-
-  ["S","M","T","W","T","F","S"]
-    .forEach(d => {
-
-      html +=
-        `<div class="day"><b>${d}</b></div>`;
-
-    });
-
-  for(let i=0;i<first;i++){
-
-    html += `<div class="day"></div>`;
-
-  }
-
-  for(let d=1;d<=total;d++){
-
-    let date =
-      `${year}-${String(month+1).padStart(2,"0")}-${String(d).padStart(2,"0")}`;
-
-    let booked =
-      bookings.some(b => b.date === date);
-
-    let isToday =
-      today.getFullYear() === year &&
-      today.getMonth() === month &&
-      today.getDate() === d;
-
-    html += `
-
-      <div class="day
-        ${booked ? "booked":""}
-        ${isToday ? "today":""}"
-        onclick="calendarDateClick('${date}')">
-
-        ${d}
-
-      </div>
-
-    `;
-
-  }
-
-  document.getElementById("calendar")
-    .innerHTML = html;
-
+return;
 }
 
-
-function calendarDateClick(date){
-
-  let list =
-    bookings.filter(b => b.date === date);
-
-  if(list.length){
-
-    alert(
-      list.map(b =>
-        `${b.name} - ${b.type} (${b.time})`
-      ).join("\n")
-    );
-
-  }else{
-
-    document.getElementById("eventDate").value=date;
-
-    showPage("addBooking");
-
-  }
+box.innerHTML=
+upcoming.map(bookingHTML).join("");
 
 }
 
 
 function updateDashboard(){
 
-  let today =
-    new Date().toISOString().split("T")[0];
+let today=
+new Date().toISOString().split("T")[0];
 
-  let now =
-    new Date();
+let month=
+new Date().toISOString().slice(0,7);
 
-  let month =
-    String(now.getMonth()+1).padStart(2,"0");
+let todayCount=
+bookings.filter(x=>x.date===today).length;
 
-  let year =
-    now.getFullYear();
+let monthBookings=
+bookings.filter(x=>x.date.startsWith(month));
 
-  let todayCount =
-    bookings.filter(b => b.date === today).length;
+let received=
+bookings.reduce(
+(sum,x)=>sum+Number(x.advance||0),0
+);
 
-  let monthCount =
-    bookings.filter(b =>
-      b.date.startsWith(`${year}-${month}`)
-    ).length;
+let pending=
+bookings.reduce(
+(sum,x)=>sum+Math.max(
+0,
+Number(x.total||0)-Number(x.advance||0)
+),0
+);
 
-  let received =
-    bookings.reduce(
-      (sum,b)=>sum+b.advance,0
-    );
+document.getElementById("todayCount")
+.innerText=todayCount;
 
-  let pending =
-    bookings.reduce(
-      (sum,b)=>sum+b.balance,0
-    );
+document.getElementById("monthCount")
+.innerText=monthBookings.length;
 
-  document.getElementById("todayBookings")
-    .textContent=todayCount;
+document.getElementById("received")
+.innerText=money(received);
 
-  document.getElementById("monthBookings")
-    .textContent=monthCount;
-
-  document.getElementById("received")
-    .textContent=received.toLocaleString();
-
-  document.getElementById("pending")
-    .textContent=pending.toLocaleString();
-
-
-  let upcoming =
-    bookings
-      .filter(b => b.date >= today)
-      .sort((a,b)=>a.date.localeCompare(b.date))
-      .slice(0,5);
-
-  let box =
-    document.getElementById("upcoming");
-
-  if(upcoming.length===0){
-
-    box.innerHTML =
-      '<div class="empty">No upcoming events</div>';
-
-  }else{
-
-    box.innerHTML =
-      upcoming.map(b => `
-
-        <div class="list-item">
-
-          <strong>${b.name}</strong>
-
-          <small>
-            📅 ${formatDate(b.date)}
-          </small>
-
-          <small>
-            🎉 ${b.type} • ${b.time}
-          </small>
-
-        </div>
-
-      `).join("");
-
-  }
+document.getElementById("pending")
+.innerText=money(pending);
 
 }
 
 
-function updateReports(){
+function showReports(){
 
-  let income =
-    bookings.reduce(
-      (sum,b)=>sum+b.total,0
-    );
+let income=
+bookings.reduce(
+(s,b)=>s+Number(b.advance||0),0
+);
 
-  let exp =
-    expenses.reduce(
-      (sum,e)=>sum+e.amount,0
-    );
+let expense=
+expenses.reduce(
+(s,e)=>s+Number(e.amount||0),0
+);
 
-  document.getElementById("reportIncome")
-    .textContent=income.toLocaleString();
+document.getElementById("reportBookings")
+.innerText=bookings.length;
 
-  document.getElementById("reportExpense")
-    .textContent=exp.toLocaleString();
+document.getElementById("reportIncome")
+.innerText=money(income);
 
-  document.getElementById("reportProfit")
-    .textContent=(income-exp).toLocaleString();
+document.getElementById("reportExpenses")
+.innerText=money(expense);
 
-  document.getElementById("reportBookings")
-    .textContent=bookings.length;
+document.getElementById("reportBalance")
+.innerText=money(income-expense);
 
-}
+document.getElementById("expenseTotal")
+.innerText=money(expense);
 
+let table=document.getElementById("reportTable");
 
-function formatDate(date){
+table.innerHTML=bookings.map(b=>`
 
-  if(!date) return "";
+<tr>
 
-  return new Date(date+"T00:00:00")
-    .toLocaleDateString(
-      "en-IN",
-      {
-        day:"2-digit",
-        month:"short",
-        year:"numeric"
-      }
-    );
+<td>${formatDate(b.date)}</td>
+
+<td>${escapeHTML(b.name)}</td>
+
+<td>${escapeHTML(b.event)}</td>
+
+<td>${money(b.total)}</td>
+
+<td>${money(b.advance)}</td>
+
+<td>${money(Math.max(0,b.total-b.advance))}</td>
+
+</tr>
+
+`).join("");
 
 }
 
 
 function updateAll(){
 
-  updateDashboard();
+renderCalendar();
 
-  showBookings();
+updateDashboard();
 
-  showCustomers();
+showBookings();
 
-  showExpenses();
+showCustomers();
 
-  showStaff();
+showExpenses();
 
-  showNotes();
+showReports();
 
-  updateReports();
+showUpcoming();
 
-  drawCalendar();
+}
+
+
+function formatDate(date){
+
+if(!date)return "";
+
+return new Date(date+"T00:00:00")
+.toLocaleDateString(
+"en-IN",
+{
+day:"2-digit",
+month:"short",
+year:"numeric"
+}
+);
+
+}
+
+
+function escapeHTML(str){
+
+return String(str || "")
+.replace(/&/g,"&amp;")
+.replace(/</g,"&lt;")
+.replace(/>/g,"&gt;")
+.replace(/"/g,"&quot;")
+.replace(/'/g,"&#039;");
 
 }
 
