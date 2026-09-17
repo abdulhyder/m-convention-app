@@ -649,6 +649,55 @@ th{
 </div>
 
 
+<!-- PAYMENT MODAL -->
+<div id="paymentModal" class="modal">
+  <div class="modal-box">
+    <button class="close" onclick="closePayment()">×</button>
+    <h2 id="paymentTitle">Add Payment</h2>
+    <br>
+    <div id="paymentBookingInfo" class="note" style="background:#f5efff"></div>
+    <div class="grid">
+      <div>
+        <label>Payment Amount ₹</label>
+        <input id="pAmount" type="number" min="1" step="1">
+      </div>
+      <div>
+        <label>Payment Date</label>
+        <input id="pDate" type="date">
+      </div>
+      <div>
+        <label>Payment Source</label>
+        <select id="pSource">
+          <option>Cash</option>
+          <option>PhonePe</option>
+          <option>Bank Account</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div>
+        <label>Reference</label>
+        <input id="pReference" placeholder="Receipt / transaction no.">
+      </div>
+      <div class="full">
+        <label>Notes</label>
+        <textarea id="pNotes" placeholder="Payment notes..."></textarea>
+      </div>
+    </div>
+    <br>
+    <button class="primary" onclick="savePayment()">SAVE PAYMENT</button>
+  </div>
+</div>
+
+<!-- PAYMENT HISTORY MODAL -->
+<div id="paymentHistoryModal" class="modal">
+  <div class="modal-box">
+    <button class="close" onclick="closePaymentHistory()">×</button>
+    <h2>Payment History</h2>
+    <br>
+    <div id="paymentHistory"></div>
+  </div>
+</div>
+
 <!-- EXPENSE MODAL -->
 <div id="expenseModal" class="modal">
 
@@ -715,6 +764,11 @@ let expenses =
 let notes =
   JSON.parse(localStorage.getItem("mConventionNotes") || "[]");
 
+let payments =
+  JSON.parse(localStorage.getItem("mConventionPayments") || "[]");
+
+let paymentBookingId = null;
+let paymentEditId = null;
 let editId = null;
 
 let currentMonth = new Date().getMonth();
@@ -741,6 +795,11 @@ function saveData(){
   localStorage.setItem(
     "mConventionNotes",
     JSON.stringify(notes)
+  );
+
+  localStorage.setItem(
+    "mConventionPayments",
+    JSON.stringify(payments)
   );
 
 }
@@ -1039,6 +1098,9 @@ function deleteBooking(id){
   bookings =
     bookings.filter(x => x.id !== id);
 
+  payments =
+    payments.filter(p => Number(p.bookingId) !== Number(id));
+
   saveData();
 
   updateUI();
@@ -1124,6 +1186,16 @@ function renderBookings(){
         </p>
 
         <br>
+
+        <button class="success"
+          onclick="openPayment(${b.id})">
+          + Payment
+        </button>
+
+        <button class="secondary"
+          onclick="showPaymentHistory(${b.id})">
+          Payment History
+        </button>
 
         <button class="secondary"
           onclick="editBooking(${b.id})">
@@ -1411,6 +1483,206 @@ function renderCustomers(){
 
 
 /* =========================
+   PAYMENTS
+========================= */
+
+function getBookingPayments(bookingId){
+  return payments
+    .filter(p => Number(p.bookingId) === Number(bookingId))
+    .sort((a,b) => b.date.localeCompare(a.date));
+}
+
+function getPaidAmount(booking){
+  let history = getBookingPayments(booking.id);
+  if(history.length){
+    return history.reduce((sum,p) => sum + Number(p.amount || 0), 0);
+  }
+  return Number(booking.advance || 0);
+}
+
+function syncBookingPaymentTotals(booking){
+  let paid = getPaidAmount(booking);
+  booking.advance = paid;
+  booking.balance = Math.max(0, Number(booking.total || 0) - paid);
+}
+
+function openPayment(bookingId){
+  let b = bookings.find(x => Number(x.id) === Number(bookingId));
+  if(!b) return;
+
+  paymentBookingId = b.id;
+  paymentEditId = null;
+
+  document.getElementById("paymentTitle").innerText = "Add Payment";
+  document.getElementById("pAmount").value = "";
+  document.getElementById("pDate").value = new Date().toISOString().split("T")[0];
+  document.getElementById("pSource").value = "Cash";
+  document.getElementById("pReference").value = "";
+  document.getElementById("pNotes").value = "";
+
+  let paid = getPaidAmount(b);
+  let balance = Math.max(0, Number(b.total || 0) - paid);
+
+  document.getElementById("paymentBookingInfo").innerHTML =
+    "<b>" + escapeHTML(b.name) + "</b><br>" +
+    "Total: " + money(b.total) +
+    " &nbsp; | &nbsp; Paid: " + money(paid) +
+    " &nbsp; | &nbsp; Balance: " + money(balance);
+
+  document.getElementById("pAmount").max = balance;
+  document.getElementById("paymentModal").style.display = "block";
+}
+
+function editPayment(paymentId){
+  let p = payments.find(x => Number(x.id) === Number(paymentId));
+  if(!p) return;
+
+  let b = bookings.find(x => Number(x.id) === Number(p.bookingId));
+  if(!b) return;
+
+  paymentBookingId = b.id;
+  paymentEditId = p.id;
+
+  document.getElementById("paymentTitle").innerText = "Edit Payment";
+  document.getElementById("pAmount").value = p.amount;
+  document.getElementById("pDate").value = p.date;
+  document.getElementById("pSource").value = p.source || "Cash";
+  document.getElementById("pReference").value = p.reference || "";
+  document.getElementById("pNotes").value = p.notes || "";
+
+  let otherPaid = getBookingPayments(b.id)
+    .filter(x => Number(x.id) !== Number(p.id))
+    .reduce((sum,x) => sum + Number(x.amount || 0), 0);
+
+  document.getElementById("pAmount").max =
+    Math.max(0, Number(b.total || 0) - otherPaid);
+
+  document.getElementById("paymentBookingInfo").innerHTML =
+    "<b>" + escapeHTML(b.name) + "</b><br>" +
+    "Total: " + money(b.total) +
+    " &nbsp; | &nbsp; Other payments: " + money(otherPaid);
+
+  document.getElementById("paymentModal").style.display = "block";
+}
+
+function savePayment(){
+  let b = bookings.find(x => Number(x.id) === Number(paymentBookingId));
+  if(!b) return;
+
+  let amount = Number(document.getElementById("pAmount").value || 0);
+  let date = document.getElementById("pDate").value;
+  let source = document.getElementById("pSource").value;
+  let reference = document.getElementById("pReference").value.trim();
+  let notesText = document.getElementById("pNotes").value.trim();
+
+  if(amount <= 0){
+    alert("Enter a valid payment amount.");
+    return;
+  }
+  if(!date){
+    alert("Please select payment date.");
+    return;
+  }
+
+  let otherPaid = getBookingPayments(b.id)
+    .filter(x => Number(x.id) !== Number(paymentEditId))
+    .reduce((sum,x) => sum + Number(x.amount || 0), 0);
+
+  if(otherPaid + amount > Number(b.total || 0)){
+    alert("Payment cannot be more than the remaining balance.");
+    return;
+  }
+
+  let payment = {
+    id: paymentEditId || Date.now(),
+    bookingId: b.id,
+    amount: amount,
+    date: date,
+    source: source,
+    reference: reference,
+    notes: notesText,
+    createdAt: new Date().toISOString()
+  };
+
+  if(paymentEditId){
+    let i = payments.findIndex(x => Number(x.id) === Number(paymentEditId));
+    if(i !== -1) payments[i] = payment;
+  }else{
+    payments.push(payment);
+  }
+
+  syncBookingPaymentTotals(b);
+  saveData();
+  closePayment();
+  updateUI();
+  alert("Payment saved successfully!");
+}
+
+function deletePayment(paymentId){
+  if(!confirm("Delete this payment?")) return;
+
+  let p = payments.find(x => Number(x.id) === Number(paymentId));
+  if(!p) return;
+
+  payments = payments.filter(x => Number(x.id) !== Number(paymentId));
+
+  let b = bookings.find(x => Number(x.id) === Number(p.bookingId));
+  if(b) syncBookingPaymentTotals(b);
+
+  saveData();
+  updateUI();
+  showPaymentHistory(p.bookingId);
+}
+
+function showPaymentHistory(bookingId){
+  let b = bookings.find(x => Number(x.id) === Number(bookingId));
+  if(!b) return;
+
+  let history = getBookingPayments(bookingId);
+  let paid = getPaidAmount(b);
+  let box = document.getElementById("paymentHistory");
+
+  let header =
+    '<div class="note" style="background:#f5efff">' +
+    '<b>' + escapeHTML(b.name) + '</b><br>' +
+    'Total: ' + money(b.total) +
+    ' &nbsp; | &nbsp; Paid: ' + money(paid) +
+    ' &nbsp; | &nbsp; Balance: ' +
+    money(Math.max(0, Number(b.total || 0) - paid)) +
+    '</div>';
+
+  if(!history.length){
+    box.innerHTML = header +
+      '<div class="empty">No payments recorded yet.</div>';
+  }else{
+    box.innerHTML = header + history.map(p => `
+      <div class="card" style="margin-bottom:10px">
+        <h3>${money(p.amount)}</h3>
+        <p>📅 ${formatDate(p.date)}</p>
+        <p>💳 ${escapeHTML(p.source || "Other")}</p>
+        ${p.reference ? `<p>🔖 ${escapeHTML(p.reference)}</p>` : ""}
+        ${p.notes ? `<p>📝 ${escapeHTML(p.notes)}</p>` : ""}
+        <br>
+        <button class="secondary" onclick="editPayment(${p.id})">Edit</button>
+        <button class="danger" onclick="deletePayment(${p.id})">Delete</button>
+      </div>
+    `).join("");
+  }
+
+  document.getElementById("paymentHistoryModal").style.display = "block";
+}
+
+function closePayment(){
+  document.getElementById("paymentModal").style.display = "none";
+  paymentBookingId = null;
+  paymentEditId = null;
+}
+
+function closePaymentHistory(){
+  document.getElementById("paymentHistoryModal").style.display = "none";
+}
+
+/* =========================
    EXPENSES
 ========================= */
 
@@ -1675,7 +1947,7 @@ function renderReports(){
 
   let received =
     bookings.reduce(
-      (sum,b)=>sum+Number(b.advance||0),0
+      (sum,b)=>sum+getPaidAmount(b),0
     );
 
   let pending =
@@ -1865,6 +2137,24 @@ window.onclick=function(e){
   ){
 
     closeExpense();
+
+  }
+
+  if(
+    e.target ===
+    document.getElementById("paymentModal")
+  ){
+
+    closePayment();
+
+  }
+
+  if(
+    e.target ===
+    document.getElementById("paymentHistoryModal")
+  ){
+
+    closePaymentHistory();
 
   }
 
