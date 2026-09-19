@@ -437,7 +437,6 @@ th{
 </div>
 
 
-
 <!-- STAFF -->
 <section id="staff" class="section">
   <h2 class="title">Staff Management</h2>
@@ -456,8 +455,8 @@ th{
       <div><label>Joining Date</label><input id="sJoiningDate" type="date"></div>
       <div><label>Monthly Salary ₹</label><input id="sSalary" type="number" min="0"></div>
       <div><label>Advance Taken ₹</label><input id="sAdvance" type="number" min="0" value="0"></div>
-    </div>
-    <br><button class="primary" onclick="saveStaff()">SAVE STAFF</button>
+    </div><br>
+    <button class="primary" onclick="saveStaff()">SAVE STAFF</button>
   </div>
 </div>
 
@@ -467,9 +466,8 @@ th{
     <h2 id="attendanceTitle">Attendance</h2><br>
     <label>Month</label>
     <input id="aMonth" type="month" onchange="renderAttendance()">
-    <br><br>
-    <div id="attendanceBody"></div>
-    <br><button class="primary" onclick="saveAttendance()">SAVE ATTENDANCE</button>
+    <br><br><div id="attendanceBody"></div><br>
+    <button class="primary" onclick="saveAttendance()">SAVE ATTENDANCE</button>
   </div>
 </div>
 
@@ -574,6 +572,11 @@ th{
   <button id="nav-expenses"
           onclick="showSection('expenses')">
     💰<br>Expenses
+  </button>
+
+  <button id="nav-staff"
+           onclick="showSection('staff')">
+    👨‍💼<br>Staff
   </button>
 
   <button id="nav-reports"
@@ -1980,7 +1983,6 @@ function closePaymentHistory(){
 /* =========================
    STAFF MANAGEMENT
 ========================= */
-
 let staff = JSON.parse(localStorage.getItem("mConventionStaff") || "[]");
 let attendance = JSON.parse(localStorage.getItem("mConventionAttendance") || "[]");
 let staffEditId = null;
@@ -1990,14 +1992,12 @@ function saveStaffData(){
   localStorage.setItem("mConventionStaff", JSON.stringify(staff));
   localStorage.setItem("mConventionAttendance", JSON.stringify(attendance));
 }
-
 function openStaff(id=null){
   staffEditId=id;
   document.getElementById("staffModal").style.display="block";
-
   if(id){
     let s=staff.find(x=>Number(x.id)===Number(id));
-    if(!s) return;
+    if(!s)return;
     document.getElementById("staffTitle").innerText="Edit Staff";
     document.getElementById("sName").value=s.name||"";
     document.getElementById("sPhone").value=s.phone||"";
@@ -2015,12 +2015,7 @@ function openStaff(id=null){
     document.getElementById("sAdvance").value=0;
   }
 }
-
-function closeStaff(){
-  document.getElementById("staffModal").style.display="none";
-  staffEditId=null;
-}
-
+function closeStaff(){document.getElementById("staffModal").style.display="none";staffEditId=null;}
 function saveStaff(){
   let name=document.getElementById("sName").value.trim();
   let phone=document.getElementById("sPhone").value.trim();
@@ -2028,162 +2023,73 @@ function saveStaff(){
   let joiningDate=document.getElementById("sJoiningDate").value;
   let salary=Number(document.getElementById("sSalary").value||0);
   let advance=Number(document.getElementById("sAdvance").value||0);
-
   if(!name){alert("Please enter staff name.");return;}
-  if(salary<0 || advance<0){alert("Amount cannot be negative.");return;}
-
-  let item={
-    id:staffEditId||Date.now(),
-    name,phone,address,joiningDate,salary,advance,
-    createdAt:new Date().toISOString()
-  };
-
+  if(salary<0||advance<0){alert("Amount cannot be negative.");return;}
+  let item={id:staffEditId||Date.now(),name,phone,address,joiningDate,salary,advance,createdAt:new Date().toISOString()};
   if(staffEditId){
     let i=staff.findIndex(x=>Number(x.id)===Number(staffEditId));
-    if(i!==-1) staff[i]=item;
-  }else{
-    staff.push(item);
-  }
-
-  saveStaffData();
-  closeStaff();
-  updateUI();
-  alert("Staff saved successfully!");
+    if(i!==-1)staff[i]=item;
+  }else staff.push(item);
+  saveStaffData();closeStaff();updateUI();alert("Staff saved successfully!");
 }
-
 function deleteStaff(id){
-  if(!confirm("Delete this staff member?")) return;
+  if(!confirm("Delete this staff member?"))return;
   staff=staff.filter(x=>Number(x.id)!==Number(id));
   attendance=attendance.filter(x=>Number(x.staffId)!==Number(id));
-  saveStaffData();
-  updateUI();
+  saveStaffData();updateUI();
 }
-
 function renderStaff(){
-  let box=document.getElementById("staffList");
-  if(!box) return;
-
-  if(!staff.length){
-    box.innerHTML='<div class="empty">No staff added yet.</div>';
-    return;
-  }
-
+  let box=document.getElementById("staffList");if(!box)return;
+  if(!staff.length){box.innerHTML='<div class="empty">No staff added yet.</div>';return;}
   box.innerHTML=staff.map(s=>`
     <div class="card" style="margin-bottom:12px">
       <h3>👨‍💼 ${escapeHTML(s.name)}</h3>
       <p>📞 ${escapeHTML(s.phone||"No phone")}</p>
+      <p>📍 ${escapeHTML(s.address||"No address")}</p>
       <p>📅 Joining: ${s.joiningDate?formatDate(s.joiningDate):"Not set"}</p>
       <p>💰 Monthly Salary: <b>${money(s.salary)}</b></p>
-      <p>💳 Advance: <b>${money(s.advance)}</b></p>
-      <br>
+      <p>💳 Advance: <b>${money(s.advance)}</b></p><br>
       <button class="success" onclick="openAttendance(${s.id})">📋 Attendance</button>
       <button class="secondary" onclick="openStaff(${s.id})">Edit</button>
       <button class="danger" onclick="deleteStaff(${s.id})">Delete</button>
-    </div>
-  `).join("");
+    </div>`).join("");
 }
-
-function workingDaysInMonth(month){
-  if(!month) return 0;
-  let [year,mon]=month.split("-").map(Number);
-  return new Date(year,mon,0).getDate();
+function daysInMonth(month){
+  if(!month)return 0;let p=month.split("-").map(Number);return new Date(p[0],p[1],0).getDate();
 }
-
-function getStaffAttendance(staffId,month){
-  return attendance.find(x=>Number(x.staffId)===Number(staffId)&&x.month===month);
-}
-
+function getStaffAttendance(staffId,month){return attendance.find(x=>Number(x.staffId)===Number(staffId)&&x.month===month);}
 function openAttendance(staffId){
-  let s=staff.find(x=>Number(x.id)===Number(staffId));
-  if(!s) return;
-
+  let s=staff.find(x=>Number(x.id)===Number(staffId));if(!s)return;
   attendanceStaffId=s.id;
   document.getElementById("attendanceTitle").innerText="Attendance - "+s.name;
-
-  let now=new Date();
-  document.getElementById("aMonth").value=
-    now.getFullYear()+"-"+String(now.getMonth()+1).padStart(2,"0");
-
-  document.getElementById("attendanceModal").style.display="block";
-  renderAttendance();
+  let d=new Date();document.getElementById("aMonth").value=d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0");
+  document.getElementById("attendanceModal").style.display="block";renderAttendance();
 }
-
-function closeAttendance(){
-  document.getElementById("attendanceModal").style.display="none";
-  attendanceStaffId=null;
-}
-
+function closeAttendance(){document.getElementById("attendanceModal").style.display="none";attendanceStaffId=null;}
 function renderAttendance(){
-  let body=document.getElementById("attendanceBody");
-  if(!body||!attendanceStaffId) return;
-
-  let month=document.getElementById("aMonth").value;
-  let days=workingDaysInMonth(month);
-  let saved=getStaffAttendance(attendanceStaffId,month);
-  let records=saved?saved.records:{};
-
+  let body=document.getElementById("attendanceBody");if(!body||!attendanceStaffId)return;
+  let month=document.getElementById("aMonth").value,days=daysInMonth(month);
+  let saved=getStaffAttendance(attendanceStaffId,month),records=saved?saved.records:{};
   let present=Object.values(records).filter(x=>x==="Present").length;
-  let absent=Object.values(records).filter(x=>x==="Absent").length;
-  let s=staff.find(x=>Number(x.id)===Number(attendanceStaffId));
-  let salary=Number(s?s.salary:0);
-  let perDay=days?salary/days:0;
-  let earned=Math.round(perDay*present);
-
-  let html=`
-    <div class="note" style="background:#f5efff">
-      <b>Present:</b> ${present}
-      &nbsp; | &nbsp; <b>Absent:</b> ${absent}
-      &nbsp; | &nbsp; <b>Estimated Salary:</b> ${money(earned)}
-    </div>`;
-
+  let s=staff.find(x=>Number(x.id)===Number(attendanceStaffId)),salary=Number(s?s.salary:0);
+  let earned=Math.round((days?salary/days:0)*present);
+  let html=`<div class="note" style="background:#f5efff"><b>Present:</b> ${present} &nbsp; | &nbsp; <b>Absent:</b> ${Object.values(records).filter(x=>x==="Absent").length} &nbsp; | &nbsp; <b>Estimated Salary:</b> ${money(earned)}</div>`;
   for(let d=1;d<=days;d++){
-    let value=records[String(d)]||"Present";
-    html+=`
-      <div style="display:grid;grid-template-columns:70px 1fr;gap:10px;align-items:center;margin-bottom:8px">
-        <b>Day ${d}</b>
-        <select id="att_${d}">
-          <option ${value==="Present"?"selected":""}>Present</option>
-          <option ${value==="Absent"?"selected":""}>Absent</option>
-        </select>
-      </div>`;
+    let v=records[String(d)]||"Present";
+    html+=`<div style="display:grid;grid-template-columns:70px 1fr;gap:10px;align-items:center;margin-bottom:8px"><b>Day ${d}</b><select id="att_${d}"><option ${v==="Present"?"selected":""}>Present</option><option ${v==="Absent"?"selected":""}>Absent</option></select></div>`;
   }
   body.innerHTML=html;
 }
-
 function saveAttendance(){
-  if(!attendanceStaffId) return;
-  let month=document.getElementById("aMonth").value;
-  if(!month){alert("Select month.");return;}
-
-  let days=workingDaysInMonth(month);
-  let records={};
-
-  for(let d=1;d<=days;d++){
-    let el=document.getElementById("att_"+d);
-    records[String(d)]=el?el.value:"Absent";
-  }
-
-  let i=attendance.findIndex(
-    x=>Number(x.staffId)===Number(attendanceStaffId)&&x.month===month
-  );
-
-  let item={
-    id:i>=0?attendance[i].id:Date.now(),
-    staffId:attendanceStaffId,
-    month,
-    records,
-    savedAt:new Date().toISOString()
-  };
-
-  if(i>=0) attendance[i]=item;
-  else attendance.push(item);
-
-  saveStaffData();
-  renderAttendance();
-  updateUI();
-  alert("Attendance saved successfully!");
+  if(!attendanceStaffId)return;
+  let month=document.getElementById("aMonth").value;if(!month){alert("Select month.");return;}
+  let days=daysInMonth(month),records={};
+  for(let d=1;d<=days;d++)records[String(d)]=document.getElementById("att_"+d).value;
+  let i=attendance.findIndex(x=>Number(x.staffId)===Number(attendanceStaffId)&&x.month===month);
+  let item={id:i>=0?attendance[i].id:Date.now(),staffId:attendanceStaffId,month,records,savedAt:new Date().toISOString()};
+  if(i>=0)attendance[i]=item;else attendance.push(item);
+  saveStaffData();renderAttendance();updateUI();alert("Attendance saved successfully!");
 }
-
 /* =========================
    EXPENSES
 ========================= */
@@ -2652,19 +2558,8 @@ window.onclick=function(e){
     closeCustomerDetails();
   }
 
-  if(
-    e.target ===
-    document.getElementById("staffModal")
-  ){
-    closeStaff();
-  }
-
-  if(
-    e.target ===
-    document.getElementById("attendanceModal")
-  ){
-    closeAttendance();
-  }
+  if(e.target === document.getElementById("staffModal")){ closeStaff(); }
+  if(e.target === document.getElementById("attendanceModal")){ closeAttendance(); }
 
   if(
     e.target ===
