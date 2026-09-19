@@ -415,13 +415,63 @@ th{
 
 <!-- CUSTOMERS -->
 <section id="customers" class="section">
-
   <h2 class="title">Customers</h2>
 
-  <div id="customerList"></div>
+  <div class="form" style="margin-bottom:12px;">
+    <input id="customerSearch"
+           placeholder="Search customer name / phone..."
+           oninput="renderCustomers()">
+  </div>
 
+  <div id="customerList"></div>
 </section>
 
+<!-- CUSTOMER DETAILS MODAL -->
+<div id="customerDetailsModal" class="modal">
+  <div class="modal-box">
+    <button class="close" onclick="closeCustomerDetails()">×</button>
+    <h2 id="customerDetailsTitle">Customer Details</h2>
+    <br>
+    <div id="customerDetailsBody"></div>
+  </div>
+</div>
+
+
+
+<!-- STAFF -->
+<section id="staff" class="section">
+  <h2 class="title">Staff Management</h2>
+  <button class="primary" onclick="openStaff()">+ ADD STAFF</button>
+  <div id="staffList"></div>
+</section>
+
+<div id="staffModal" class="modal">
+  <div class="modal-box">
+    <button class="close" onclick="closeStaff()">×</button>
+    <h2 id="staffTitle">Add Staff</h2><br>
+    <div class="grid">
+      <div><label>Staff Name</label><input id="sName"></div>
+      <div><label>Phone Number</label><input id="sPhone" type="tel"></div>
+      <div class="full"><label>Address</label><textarea id="sAddress"></textarea></div>
+      <div><label>Joining Date</label><input id="sJoiningDate" type="date"></div>
+      <div><label>Monthly Salary ₹</label><input id="sSalary" type="number" min="0"></div>
+      <div><label>Advance Taken ₹</label><input id="sAdvance" type="number" min="0" value="0"></div>
+    </div>
+    <br><button class="primary" onclick="saveStaff()">SAVE STAFF</button>
+  </div>
+</div>
+
+<div id="attendanceModal" class="modal">
+  <div class="modal-box">
+    <button class="close" onclick="closeAttendance()">×</button>
+    <h2 id="attendanceTitle">Attendance</h2><br>
+    <label>Month</label>
+    <input id="aMonth" type="month" onchange="renderAttendance()">
+    <br><br>
+    <div id="attendanceBody"></div>
+    <br><button class="primary" onclick="saveAttendance()">SAVE ATTENDANCE</button>
+  </div>
+</div>
 
 <!-- EXPENSES -->
 <section id="expenses" class="section">
@@ -1423,61 +1473,231 @@ function renderUpcoming(){
 
 function renderCustomers(){
 
-  let map={};
+  let box = document.getElementById("customerList");
+  if(!box) return;
 
-  bookings.forEach(b=>{
+  let search =
+    (document.getElementById("customerSearch")?.value || "")
+    .trim()
+    .toLowerCase();
 
-    if(!map[b.phone]){
+  let map = {};
 
-      map[b.phone]={
-        name:b.name,
-        phone:b.phone,
-        bookings:0,
-        total:0
+  bookings.forEach(b => {
+
+    let phone = String(b.phone || "").trim();
+    let key = phone || String(b.name || "").trim().toLowerCase();
+
+    if(!key) return;
+
+    if(!map[key]){
+      map[key] = {
+        name:b.name || "Unknown",
+        phone:phone,
+        bookings:[]
       };
-
     }
 
-    map[b.phone].bookings++;
+    if(b.name) map[key].name = b.name;
+    if(phone) map[key].phone = phone;
 
-    map[b.phone].total += Number(b.total||0);
+    map[key].bookings.push(b);
 
   });
 
+  let list = Object.values(map);
 
-  let list =
-    Object.values(map);
+  if(search){
+    list = list.filter(c =>
+      String(c.name).toLowerCase().includes(search) ||
+      String(c.phone).toLowerCase().includes(search)
+    );
+  }
 
-
-  let box =
-    document.getElementById("customerList");
-
+  list.sort((a,b)=>
+    String(a.name).localeCompare(String(b.name))
+  );
 
   if(!list.length){
 
-    box.innerHTML=
-      '<div class="empty">No customers yet.</div>';
+    box.innerHTML =
+      '<div class="empty">No customers found.</div>';
 
     return;
 
   }
 
+  box.innerHTML = list.map(c => {
 
-  box.innerHTML=list.map(c=>`
+    let total = c.bookings.reduce(
+      (sum,b)=>sum+Number(b.total||0),0
+    );
 
-    <div class="card" style="margin-bottom:10px">
+    let paid = c.bookings.reduce(
+      (sum,b)=>sum+getPaidAmount(b),0
+    );
 
-      <h3>${escapeHTML(c.name)}</h3>
+    let balance = Math.max(0,total-paid);
 
-      <p>📞 ${escapeHTML(c.phone)}</p>
+    let key = encodeURIComponent(
+      c.phone || c.name
+    );
 
-      <p>Bookings: ${c.bookings}</p>
+    return `
 
-      <p>Total Business: ${money(c.total)}</p>
+      <div class="card"
+           style="margin-bottom:12px;cursor:pointer"
+           onclick="showCustomerDetails('${key}')">
+
+        <h3>${escapeHTML(c.name)}</h3>
+
+        <p>📞 ${escapeHTML(c.phone || "No phone")}</p>
+
+        <p>📅 Bookings: <b>${c.bookings.length}</b></p>
+
+        <p>💰 Total Business: <b>${money(total)}</b></p>
+
+        <p>✅ Total Paid: <b>${money(paid)}</b></p>
+
+        <p>⏳ Balance: <b>${money(balance)}</b></p>
+
+        <br>
+
+        <button class="secondary"
+                onclick="event.stopPropagation();showCustomerDetails('${key}')">
+          View Details
+        </button>
+
+      </div>
+
+    `;
+
+  }).join("");
+
+}
+
+
+function showCustomerDetails(key){
+
+  key = decodeURIComponent(key);
+
+  let customer = null;
+
+  Object.values(
+    bookings.reduce((map,b)=>{
+
+      let phone = String(b.phone || "").trim();
+      let k = phone || String(b.name || "").trim().toLowerCase();
+
+      if(!k) return map;
+
+      if(!map[k]){
+        map[k] = {
+          name:b.name || "Unknown",
+          phone:phone,
+          bookings:[]
+        };
+      }
+
+      map[k].bookings.push(b);
+
+      return map;
+
+    },{})
+  ).forEach(c=>{
+
+    if((c.phone || c.name) === key){
+      customer = c;
+    }
+
+  });
+
+  if(!customer) return;
+
+  let total = customer.bookings.reduce(
+    (sum,b)=>sum+Number(b.total||0),0
+  );
+
+  let paid = customer.bookings.reduce(
+    (sum,b)=>sum+getPaidAmount(b),0
+  );
+
+  let balance = Math.max(0,total-paid);
+
+  let body = document.getElementById("customerDetailsBody");
+
+  body.innerHTML = `
+
+    <div class="card" style="margin-bottom:12px">
+
+      <h3>${escapeHTML(customer.name)}</h3>
+
+      <p>📞 ${escapeHTML(customer.phone || "No phone")}</p>
+
+      <hr style="margin:12px 0;border:0;border-top:1px solid #eee">
+
+      <p>Total Bookings: <b>${customer.bookings.length}</b></p>
+      <p>Total Business: <b>${money(total)}</b></p>
+      <p>Total Paid: <b>${money(paid)}</b></p>
+      <p>Total Balance: <b>${money(balance)}</b></p>
 
     </div>
 
-  `).join("");
+    <h3>Event History</h3>
+
+    <br>
+
+    ${customer.bookings
+      .slice()
+      .sort((a,b)=>b.date.localeCompare(a.date))
+      .map(b=>`
+
+        <div class="card" style="margin-bottom:10px">
+
+          <h3>${escapeHTML(b.event)}</h3>
+
+          <p>📅 ${formatDate(b.date)}</p>
+
+          <p>🕐 ${escapeHTML(b.slot)}
+             ${b.time ? " - "+escapeHTML(b.time) : ""}
+          </p>
+
+          <p>💰 Total: <b>${money(b.total)}</b></p>
+
+          <p>✅ Paid: <b>${money(getPaidAmount(b))}</b></p>
+
+          <p>⏳ Balance:
+             <b>${money(Math.max(0,Number(b.total||0)-getPaidAmount(b)))}</b>
+          </p>
+
+          <br>
+
+          <button class="success"
+                  onclick="openPayment(${b.id});closeCustomerDetails()">
+            + Payment
+          </button>
+
+          <button class="secondary"
+                  onclick="showPaymentHistory(${b.id});closeCustomerDetails()">
+            Payment History
+          </button>
+
+        </div>
+
+      `).join("")}
+
+  `;
+
+  document.getElementById("customerDetailsModal")
+    .style.display="block";
+
+}
+
+
+function closeCustomerDetails(){
+
+  document.getElementById("customerDetailsModal")
+    .style.display="none";
 
 }
 
@@ -1754,6 +1974,214 @@ function closePayment(){
 
 function closePaymentHistory(){
   document.getElementById("paymentHistoryModal").style.display = "none";
+}
+
+
+/* =========================
+   STAFF MANAGEMENT
+========================= */
+
+let staff = JSON.parse(localStorage.getItem("mConventionStaff") || "[]");
+let attendance = JSON.parse(localStorage.getItem("mConventionAttendance") || "[]");
+let staffEditId = null;
+let attendanceStaffId = null;
+
+function saveStaffData(){
+  localStorage.setItem("mConventionStaff", JSON.stringify(staff));
+  localStorage.setItem("mConventionAttendance", JSON.stringify(attendance));
+}
+
+function openStaff(id=null){
+  staffEditId=id;
+  document.getElementById("staffModal").style.display="block";
+
+  if(id){
+    let s=staff.find(x=>Number(x.id)===Number(id));
+    if(!s) return;
+    document.getElementById("staffTitle").innerText="Edit Staff";
+    document.getElementById("sName").value=s.name||"";
+    document.getElementById("sPhone").value=s.phone||"";
+    document.getElementById("sAddress").value=s.address||"";
+    document.getElementById("sJoiningDate").value=s.joiningDate||"";
+    document.getElementById("sSalary").value=s.salary||0;
+    document.getElementById("sAdvance").value=s.advance||0;
+  }else{
+    document.getElementById("staffTitle").innerText="Add Staff";
+    document.getElementById("sName").value="";
+    document.getElementById("sPhone").value="";
+    document.getElementById("sAddress").value="";
+    document.getElementById("sJoiningDate").value=new Date().toISOString().split("T")[0];
+    document.getElementById("sSalary").value="";
+    document.getElementById("sAdvance").value=0;
+  }
+}
+
+function closeStaff(){
+  document.getElementById("staffModal").style.display="none";
+  staffEditId=null;
+}
+
+function saveStaff(){
+  let name=document.getElementById("sName").value.trim();
+  let phone=document.getElementById("sPhone").value.trim();
+  let address=document.getElementById("sAddress").value.trim();
+  let joiningDate=document.getElementById("sJoiningDate").value;
+  let salary=Number(document.getElementById("sSalary").value||0);
+  let advance=Number(document.getElementById("sAdvance").value||0);
+
+  if(!name){alert("Please enter staff name.");return;}
+  if(salary<0 || advance<0){alert("Amount cannot be negative.");return;}
+
+  let item={
+    id:staffEditId||Date.now(),
+    name,phone,address,joiningDate,salary,advance,
+    createdAt:new Date().toISOString()
+  };
+
+  if(staffEditId){
+    let i=staff.findIndex(x=>Number(x.id)===Number(staffEditId));
+    if(i!==-1) staff[i]=item;
+  }else{
+    staff.push(item);
+  }
+
+  saveStaffData();
+  closeStaff();
+  updateUI();
+  alert("Staff saved successfully!");
+}
+
+function deleteStaff(id){
+  if(!confirm("Delete this staff member?")) return;
+  staff=staff.filter(x=>Number(x.id)!==Number(id));
+  attendance=attendance.filter(x=>Number(x.staffId)!==Number(id));
+  saveStaffData();
+  updateUI();
+}
+
+function renderStaff(){
+  let box=document.getElementById("staffList");
+  if(!box) return;
+
+  if(!staff.length){
+    box.innerHTML='<div class="empty">No staff added yet.</div>';
+    return;
+  }
+
+  box.innerHTML=staff.map(s=>`
+    <div class="card" style="margin-bottom:12px">
+      <h3>👨‍💼 ${escapeHTML(s.name)}</h3>
+      <p>📞 ${escapeHTML(s.phone||"No phone")}</p>
+      <p>📅 Joining: ${s.joiningDate?formatDate(s.joiningDate):"Not set"}</p>
+      <p>💰 Monthly Salary: <b>${money(s.salary)}</b></p>
+      <p>💳 Advance: <b>${money(s.advance)}</b></p>
+      <br>
+      <button class="success" onclick="openAttendance(${s.id})">📋 Attendance</button>
+      <button class="secondary" onclick="openStaff(${s.id})">Edit</button>
+      <button class="danger" onclick="deleteStaff(${s.id})">Delete</button>
+    </div>
+  `).join("");
+}
+
+function workingDaysInMonth(month){
+  if(!month) return 0;
+  let [year,mon]=month.split("-").map(Number);
+  return new Date(year,mon,0).getDate();
+}
+
+function getStaffAttendance(staffId,month){
+  return attendance.find(x=>Number(x.staffId)===Number(staffId)&&x.month===month);
+}
+
+function openAttendance(staffId){
+  let s=staff.find(x=>Number(x.id)===Number(staffId));
+  if(!s) return;
+
+  attendanceStaffId=s.id;
+  document.getElementById("attendanceTitle").innerText="Attendance - "+s.name;
+
+  let now=new Date();
+  document.getElementById("aMonth").value=
+    now.getFullYear()+"-"+String(now.getMonth()+1).padStart(2,"0");
+
+  document.getElementById("attendanceModal").style.display="block";
+  renderAttendance();
+}
+
+function closeAttendance(){
+  document.getElementById("attendanceModal").style.display="none";
+  attendanceStaffId=null;
+}
+
+function renderAttendance(){
+  let body=document.getElementById("attendanceBody");
+  if(!body||!attendanceStaffId) return;
+
+  let month=document.getElementById("aMonth").value;
+  let days=workingDaysInMonth(month);
+  let saved=getStaffAttendance(attendanceStaffId,month);
+  let records=saved?saved.records:{};
+
+  let present=Object.values(records).filter(x=>x==="Present").length;
+  let absent=Object.values(records).filter(x=>x==="Absent").length;
+  let s=staff.find(x=>Number(x.id)===Number(attendanceStaffId));
+  let salary=Number(s?s.salary:0);
+  let perDay=days?salary/days:0;
+  let earned=Math.round(perDay*present);
+
+  let html=`
+    <div class="note" style="background:#f5efff">
+      <b>Present:</b> ${present}
+      &nbsp; | &nbsp; <b>Absent:</b> ${absent}
+      &nbsp; | &nbsp; <b>Estimated Salary:</b> ${money(earned)}
+    </div>`;
+
+  for(let d=1;d<=days;d++){
+    let value=records[String(d)]||"Present";
+    html+=`
+      <div style="display:grid;grid-template-columns:70px 1fr;gap:10px;align-items:center;margin-bottom:8px">
+        <b>Day ${d}</b>
+        <select id="att_${d}">
+          <option ${value==="Present"?"selected":""}>Present</option>
+          <option ${value==="Absent"?"selected":""}>Absent</option>
+        </select>
+      </div>`;
+  }
+  body.innerHTML=html;
+}
+
+function saveAttendance(){
+  if(!attendanceStaffId) return;
+  let month=document.getElementById("aMonth").value;
+  if(!month){alert("Select month.");return;}
+
+  let days=workingDaysInMonth(month);
+  let records={};
+
+  for(let d=1;d<=days;d++){
+    let el=document.getElementById("att_"+d);
+    records[String(d)]=el?el.value:"Absent";
+  }
+
+  let i=attendance.findIndex(
+    x=>Number(x.staffId)===Number(attendanceStaffId)&&x.month===month
+  );
+
+  let item={
+    id:i>=0?attendance[i].id:Date.now(),
+    staffId:attendanceStaffId,
+    month,
+    records,
+    savedAt:new Date().toISOString()
+  };
+
+  if(i>=0) attendance[i]=item;
+  else attendance.push(item);
+
+  saveStaffData();
+  renderAttendance();
+  updateUI();
+  alert("Attendance saved successfully!");
 }
 
 /* =========================
@@ -2142,6 +2570,8 @@ function updateUI(){
 
   renderCustomers();
 
+  renderStaff();
+
   renderExpenses();
 
   renderReports();
@@ -2212,6 +2642,28 @@ window.onclick=function(e){
 
     closeExpense();
 
+  }
+
+
+  if(
+    e.target ===
+    document.getElementById("customerDetailsModal")
+  ){
+    closeCustomerDetails();
+  }
+
+  if(
+    e.target ===
+    document.getElementById("staffModal")
+  ){
+    closeStaff();
+  }
+
+  if(
+    e.target ===
+    document.getElementById("attendanceModal")
+  ){
+    closeAttendance();
   }
 
   if(
