@@ -1,0 +1,2594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>M Convention</title>
+
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+  font-family:Arial,sans-serif;
+}
+
+body{
+  background:#f4f7fb;
+  color:#222;
+  padding-bottom:75px;
+}
+
+header{
+  background:linear-gradient(135deg,#8e2de2,#ff416c);
+  color:white;
+  padding:22px 18px;
+  text-align:center;
+}
+
+header h1{
+  font-size:30px;
+}
+
+header p{
+  margin-top:5px;
+  opacity:.9;
+}
+
+.logo{
+  width:75px;
+  height:75px;
+  border-radius:50%;
+  background:white;
+  color:#e52d4f;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:45px;
+  font-weight:bold;
+  margin:15px auto;
+  box-shadow:0 5px 20px #0003;
+}
+
+.container{
+  max-width:1100px;
+  margin:auto;
+  padding:15px;
+}
+
+.cards{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:12px;
+}
+
+.card{
+  background:white;
+  border-radius:15px;
+  padding:18px;
+  box-shadow:0 3px 15px #0001;
+}
+
+.card small{
+  color:#777;
+}
+
+.card h2{
+  margin-top:8px;
+  color:#d92d55;
+}
+
+button{
+  border:0;
+  border-radius:9px;
+  padding:11px 16px;
+  cursor:pointer;
+  font-weight:bold;
+}
+
+.primary{
+  width:100%;
+  margin:15px 0;
+  color:white;
+  background:linear-gradient(90deg,#ff416c,#8e2de2);
+}
+
+.secondary{
+  background:#eee;
+}
+
+.danger{
+  background:#ff4d4d;
+  color:white;
+}
+
+.success{
+  background:#19a974;
+  color:white;
+}
+
+.section{
+  display:none;
+}
+
+.section.active{
+  display:block;
+}
+
+.title{
+  margin:20px 0 12px;
+  font-size:22px;
+}
+
+.form{
+  background:white;
+  padding:18px;
+  border-radius:15px;
+  box-shadow:0 3px 15px #0001;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px;
+}
+
+label{
+  font-size:13px;
+  font-weight:bold;
+  color:#555;
+}
+
+input,select,textarea{
+  width:100%;
+  margin-top:5px;
+  padding:12px;
+  border:1px solid #ddd;
+  border-radius:8px;
+  outline:none;
+}
+
+textarea{
+  min-height:80px;
+  resize:vertical;
+}
+
+.full{
+  grid-column:1/-1;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  background:white;
+  border-radius:12px;
+  overflow:hidden;
+}
+
+th,td{
+  padding:10px;
+  border-bottom:1px solid #eee;
+  text-align:left;
+  font-size:13px;
+}
+
+th{
+  background:#f0e8ff;
+}
+
+.badge{
+  padding:5px 8px;
+  border-radius:20px;
+  font-size:11px;
+  font-weight:bold;
+}
+
+.paid{
+  background:#d8f8e7;
+  color:#087443;
+}
+
+.pending{
+  background:#ffe0e0;
+  color:#b00020;
+}
+
+.calendar-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin:15px 0;
+}
+
+.calendar{
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  gap:5px;
+}
+
+.day-name{
+  text-align:center;
+  font-weight:bold;
+  padding:8px 2px;
+  font-size:12px;
+}
+
+.day{
+  min-height:80px;
+  background:white;
+  border-radius:9px;
+  padding:6px;
+  box-shadow:0 2px 8px #0001;
+}
+
+.day.empty{
+  background:transparent;
+  box-shadow:none;
+}
+
+.day strong{
+  font-size:13px;
+}
+
+.booked{
+  background:#ffe0ea;
+  border:2px solid #ff416c;
+}
+
+.slot{
+  display:block;
+  font-size:9px;
+  margin-top:4px;
+  padding:3px;
+  background:#8e2de2;
+  color:white;
+  border-radius:4px;
+}
+
+.nav{
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  background:white;
+  display:flex;
+  justify-content:space-around;
+  padding:8px 3px;
+  box-shadow:0 -3px 15px #0002;
+  z-index:20;
+}
+
+.nav button{
+  background:none;
+  padding:6px;
+  font-size:11px;
+  color:#555;
+}
+
+.nav button.active{
+  color:#d92d55;
+  font-weight:bold;
+}
+
+.modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:#0008;
+  z-index:50;
+  overflow:auto;
+  padding:20px;
+}
+
+.modal-box{
+  background:white;
+  max-width:650px;
+  margin:20px auto;
+  border-radius:15px;
+  padding:20px;
+}
+
+.close{
+  float:right;
+  background:#eee;
+  border-radius:50%;
+  width:35px;
+  height:35px;
+}
+
+.empty{
+  text-align:center;
+  padding:30px;
+  color:#777;
+}
+
+.note{
+  background:#fffbd1;
+  padding:15px;
+  border-radius:10px;
+  margin-bottom:10px;
+}
+
+@media(max-width:700px){
+  .cards{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .grid{
+    grid-template-columns:1fr;
+  }
+
+  .full{
+    grid-column:auto;
+  }
+
+  table{
+    display:block;
+    overflow-x:auto;
+  }
+
+  .day{
+    min-height:60px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">M</div>
+  <h1>M Convention</h1>
+  <p>Convention Hall Management</p>
+</header>
+
+<div class="container">
+
+<!-- HOME -->
+<section id="home" class="section active">
+
+  <div class="cards">
+    <div class="card">
+      <small>Today's Bookings</small>
+      <h2 id="todayCount">0</h2>
+    </div>
+
+    <div class="card">
+      <small>This Month</small>
+      <h2 id="monthCount">0</h2>
+    </div>
+
+    <div class="card">
+      <small>Received</small>
+      <h2 id="receivedAmount">₹0</h2>
+    </div>
+
+    <div class="card">
+      <small>Pending</small>
+      <h2 id="pendingAmount">₹0</h2>
+    </div>
+  </div>
+
+  <button class="primary" onclick="openBooking()">
+    + ADD NEW BOOKING
+  </button>
+
+  <h2 class="title">Calendar</h2>
+
+  <div class="form">
+    <div class="calendar-head">
+      <button class="secondary" onclick="changeMonth(-1)">‹</button>
+      <h3 id="monthTitle"></h3>
+      <button class="secondary" onclick="changeMonth(1)">›</button>
+    </div>
+
+    <div id="calendar" class="calendar"></div>
+  </div>
+
+  <h2 class="title">Upcoming Events</h2>
+  <div id="upcoming"></div>
+
+</section>
+
+
+<!-- BOOKINGS -->
+<section id="bookings" class="section">
+
+  <h2 class="title">Bookings</h2>
+
+  <button class="primary" onclick="openBooking()">
+    + ADD NEW BOOKING
+  </button>
+
+  <div class="form">
+    <input id="bookingSearch"
+           placeholder="Search customer / phone..."
+           oninput="renderBookings()">
+  </div>
+
+  <br>
+
+  <div id="bookingList"></div>
+
+</section>
+
+
+<!-- CUSTOMERS -->
+<section id="customers" class="section">
+  <h2 class="title">Customers</h2>
+
+  <div class="form" style="margin-bottom:12px;">
+    <input id="customerSearch"
+           placeholder="Search customer name / phone..."
+           oninput="renderCustomers()">
+  </div>
+
+  <div id="customerList"></div>
+</section>
+
+<!-- CUSTOMER DETAILS MODAL -->
+<div id="customerDetailsModal" class="modal">
+  <div class="modal-box">
+    <button class="close" onclick="closeCustomerDetails()">×</button>
+    <h2 id="customerDetailsTitle">Customer Details</h2>
+    <br>
+    <div id="customerDetailsBody"></div>
+  </div>
+</div>
+
+
+<!-- STAFF -->
+<section id="staff" class="section">
+  <h2 class="title">Staff Management</h2>
+  <button class="primary" onclick="openStaff()">+ ADD STAFF</button>
+  <div id="staffList"></div>
+</section>
+
+<div id="staffModal" class="modal">
+  <div class="modal-box">
+    <button class="close" onclick="closeStaff()">×</button>
+    <h2 id="staffTitle">Add Staff</h2><br>
+    <div class="grid">
+      <div><label>Staff Name</label><input id="sName"></div>
+      <div><label>Phone Number</label><input id="sPhone" type="tel"></div>
+      <div class="full"><label>Address</label><textarea id="sAddress"></textarea></div>
+      <div><label>Joining Date</label><input id="sJoiningDate" type="date"></div>
+      <div><label>Monthly Salary ₹</label><input id="sSalary" type="number" min="0"></div>
+      <div><label>Advance Taken ₹</label><input id="sAdvance" type="number" min="0" value="0"></div>
+    </div><br>
+    <button class="primary" onclick="saveStaff()">SAVE STAFF</button>
+  </div>
+</div>
+
+<div id="attendanceModal" class="modal">
+  <div class="modal-box">
+    <button class="close" onclick="closeAttendance()">×</button>
+    <h2 id="attendanceTitle">Attendance</h2><br>
+    <label>Month</label>
+    <input id="aMonth" type="month" onchange="renderAttendance()">
+    <br><br><div id="attendanceBody"></div><br>
+    <button class="primary" onclick="saveAttendance()">SAVE ATTENDANCE</button>
+  </div>
+</div>
+
+<!-- EXPENSES -->
+<section id="expenses" class="section">
+
+  <h2 class="title">Expenses</h2>
+
+  <button class="primary" onclick="openExpense()">
+    + ADD EXPENSE
+  </button>
+
+  <div id="expenseList"></div>
+
+</section>
+
+
+<!-- REPORTS -->
+<section id="reports" class="section">
+
+  <h2 class="title">Reports</h2>
+
+  <div class="cards">
+
+    <div class="card">
+      <small>Total Booking Value</small>
+      <h2 id="reportTotal">₹0</h2>
+    </div>
+
+    <div class="card">
+      <small>Total Received</small>
+      <h2 id="reportReceived">₹0</h2>
+    </div>
+
+    <div class="card">
+      <small>Total Pending</small>
+      <h2 id="reportPending">₹0</h2>
+    </div>
+
+    <div class="card">
+      <small>Total Expenses</small>
+      <h2 id="reportExpenses">₹0</h2>
+    </div>
+
+  </div>
+
+  <h2 class="title">Financial Summary</h2>
+
+  <div class="form">
+    <p>Total Income: <b id="rIncome">₹0</b></p>
+    <br>
+    <p>Total Expenses: <b id="rExpense">₹0</b></p>
+    <br>
+    <p>Balance: <b id="rBalance">₹0</b></p>
+  </div>
+
+</section>
+
+
+<!-- NOTES -->
+<section id="notes" class="section">
+
+  <h2 class="title">Notes</h2>
+
+  <div class="form">
+    <textarea id="noteText"
+      placeholder="Write your note..."></textarea>
+
+    <button class="primary" onclick="addNote()">
+      + SAVE NOTE
+    </button>
+  </div>
+
+  <br>
+
+  <div id="noteList"></div>
+
+</section>
+
+</div>
+
+
+<!-- BOTTOM NAV -->
+<div class="nav">
+
+  <button id="nav-home"
+          class="active"
+          onclick="showSection('home')">
+    🏠<br>Home
+  </button>
+
+  <button id="nav-bookings"
+          onclick="showSection('bookings')">
+    📅<br>Bookings
+  </button>
+
+  <button id="nav-customers"
+          onclick="showSection('customers')">
+    👥<br>Customers
+  </button>
+
+  <button id="nav-expenses"
+          onclick="showSection('expenses')">
+    💰<br>Expenses
+  </button>
+
+  <button id="nav-staff"
+           onclick="showSection('staff')">
+    👨‍💼<br>Staff
+  </button>
+
+  <button id="nav-reports"
+          onclick="showSection('reports')">
+    📊<br>Reports
+  </button>
+
+</div>
+
+
+<!-- BOOKING MODAL -->
+<div id="bookingModal" class="modal">
+
+  <div class="modal-box">
+
+    <button class="close"
+            onclick="closeBooking()">×</button>
+
+    <h2 id="bookingTitle">New Booking</h2>
+
+    <br>
+
+    <div class="grid">
+
+      <div>
+        <label>Customer Name</label>
+        <input id="bName">
+      </div>
+
+      <div>
+        <label>Phone Number</label>
+        <input id="bPhone"
+               type="tel">
+      </div>
+
+      <div>
+        <label>Event Type</label>
+        <select id="bEvent">
+          <option>Marriage</option>
+          <option>Reception</option>
+          <option>Birthday</option>
+          <option>Meeting</option>
+          <option>Other</option>
+        </select>
+      </div>
+
+      <div>
+        <label>Event Date</label>
+        <input id="bDate"
+               type="date">
+      </div>
+
+      <div>
+        <label>Event Slot</label>
+        <select id="bSlot">
+          <option>Afternoon</option>
+          <option>Night</option>
+        </select>
+      </div>
+
+      <div>
+        <label>Event Time</label>
+        <input id="bTime"
+               type="time">
+      </div>
+
+      <div>
+        <label>Number of Guests</label>
+        <input id="bGuests"
+               type="number"
+               min="0">
+      </div>
+
+      <div>
+        <label>Total Amount ₹</label>
+        <input id="bTotal"
+               type="number"
+               min="0"
+               step="1"
+               placeholder="Example: 890">
+      </div>
+
+      <div>
+        <label>Advance Received ₹</label>
+        <input id="bAdvance"
+               type="number"
+               min="0"
+               step="1"
+               value="0">
+      </div>
+
+      <div>
+        <label>Payment Source</label>
+        <select id="bSource">
+          <option>Cash</option>
+          <option>PhonePe</option>
+          <option>Bank Account</option>
+          <option>Other</option>
+        </select>
+      </div>
+
+      <div class="full">
+        <label>Reference</label>
+        <input id="bReference">
+      </div>
+
+      <div class="full">
+        <label>Notes</label>
+        <textarea id="bNotes"></textarea>
+      </div>
+
+    </div>
+
+    <br>
+
+    <button class="primary"
+            onclick="saveBooking()">
+      SAVE BOOKING
+    </button>
+
+  </div>
+
+</div>
+
+
+<!-- PAYMENT MODAL -->
+<div id="paymentModal" class="modal">
+  <div class="modal-box">
+    <button class="close" onclick="closePayment()">×</button>
+    <h2 id="paymentTitle">Add Payment</h2>
+    <br>
+    <div id="paymentBookingInfo" class="note" style="background:#f5efff"></div>
+    <div class="grid">
+      <div>
+        <label>Payment Amount ₹</label>
+        <input id="pAmount" type="number" min="1" step="1">
+      </div>
+      <div>
+        <label>Payment Date</label>
+        <input id="pDate" type="date">
+      </div>
+      <div>
+        <label>Payment Source</label>
+        <select id="pSource">
+          <option>Cash</option>
+          <option>PhonePe</option>
+          <option>Bank Account</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div>
+        <label>Reference</label>
+        <input id="pReference" placeholder="Receipt / transaction no.">
+      </div>
+      <div class="full">
+        <label>Notes</label>
+        <textarea id="pNotes" placeholder="Payment notes..."></textarea>
+      </div>
+    </div>
+    <br>
+    <button class="primary" onclick="savePayment()">SAVE PAYMENT</button>
+  </div>
+</div>
+
+<!-- PAYMENT HISTORY MODAL -->
+<div id="paymentHistoryModal" class="modal">
+  <div class="modal-box">
+    <button class="close" onclick="closePaymentHistory()">×</button>
+    <h2>Payment History</h2>
+    <br>
+    <div id="paymentHistory"></div>
+  </div>
+</div>
+
+<!-- EXPENSE MODAL -->
+<div id="expenseModal" class="modal">
+
+  <div class="modal-box">
+
+    <button class="close"
+            onclick="closeExpense()">×</button>
+
+    <h2>Add Expense</h2>
+
+    <br>
+
+    <label>Purpose</label>
+    <input id="ePurpose">
+
+    <br><br>
+
+    <label>Amount ₹</label>
+    <input id="eAmount"
+           type="number"
+           min="0">
+
+    <br><br>
+
+    <label>Date</label>
+    <input id="eDate"
+           type="date">
+
+    <br><br>
+
+    <label>Payment Source</label>
+    <select id="eSource">
+      <option>Cash</option>
+      <option>PhonePe</option>
+      <option>Bank Account</option>
+    </select>
+
+    <br><br>
+
+    <label>Status</label>
+    <select id="eStatus">
+      <option>Settled</option>
+      <option>Pending</option>
+    </select>
+
+    <button class="primary"
+            onclick="saveExpense()">
+      SAVE EXPENSE
+    </button>
+
+  </div>
+
+</div>
+
+
+<script>
+
+let bookings =
+  JSON.parse(localStorage.getItem("mConventionBookings") || "[]");
+
+let expenses =
+  JSON.parse(localStorage.getItem("mConventionExpenses") || "[]");
+
+let notes =
+  JSON.parse(localStorage.getItem("mConventionNotes") || "[]");
+
+let payments =
+  JSON.parse(localStorage.getItem("mConventionPayments") || "[]");
+
+let paymentBookingId = null;
+let paymentEditId = null;
+let editId = null;
+
+let currentMonth = new Date().getMonth();
+
+let currentYear = new Date().getFullYear();
+
+
+/* =========================
+   STORAGE
+========================= */
+
+function saveData(){
+
+  localStorage.setItem(
+    "mConventionBookings",
+    JSON.stringify(bookings)
+  );
+
+  localStorage.setItem(
+    "mConventionExpenses",
+    JSON.stringify(expenses)
+  );
+
+  localStorage.setItem(
+    "mConventionNotes",
+    JSON.stringify(notes)
+  );
+
+  localStorage.setItem(
+    "mConventionPayments",
+    JSON.stringify(payments)
+  );
+
+}
+
+
+/* =========================
+   MONEY
+========================= */
+
+function money(value){
+
+  return "₹" +
+    Number(value || 0).toLocaleString("en-IN");
+
+}
+
+
+/* =========================
+   NAVIGATION
+========================= */
+
+function showSection(id){
+
+  document.querySelectorAll(".section")
+    .forEach(s => s.classList.remove("active"));
+
+  document.getElementById(id)
+    .classList.add("active");
+
+  document.querySelectorAll(".nav button")
+    .forEach(b => b.classList.remove("active"));
+
+  let nav = document.getElementById("nav-" + id);
+
+  if(nav) nav.classList.add("active");
+
+  updateUI();
+
+  window.scrollTo({
+    top:0,
+    behavior:"smooth"
+  });
+
+}
+
+
+/* =========================
+   BOOKING MODAL
+========================= */
+
+function openBooking(id=null){
+
+  editId = id;
+
+  document.getElementById("bookingModal")
+    .style.display="block";
+
+  if(id){
+
+    let b =
+      bookings.find(x => x.id === id);
+
+    if(!b) return;
+
+    document.getElementById("bookingTitle")
+      .innerText="Edit Booking";
+
+    document.getElementById("bName").value=b.name;
+    document.getElementById("bPhone").value=b.phone;
+    document.getElementById("bEvent").value=b.event;
+    document.getElementById("bDate").value=b.date;
+    document.getElementById("bSlot").value=b.slot;
+    document.getElementById("bTime").value=b.time;
+    document.getElementById("bGuests").value=b.guests;
+    document.getElementById("bTotal").value=b.total;
+    document.getElementById("bAdvance").value=b.advance;
+    document.getElementById("bSource").value=b.source;
+    document.getElementById("bReference").value=b.reference || "";
+    document.getElementById("bNotes").value=b.notes || "";
+
+  }else{
+
+    document.getElementById("bookingTitle")
+      .innerText="New Booking";
+
+    clearBookingForm();
+
+    let d=new Date();
+
+    document.getElementById("bDate").value =
+      d.toISOString().split("T")[0];
+
+  }
+
+}
+
+
+function closeBooking(){
+
+  document.getElementById("bookingModal")
+    .style.display="none";
+
+  editId=null;
+
+}
+
+
+function clearBookingForm(){
+
+  [
+    "bName",
+    "bPhone",
+    "bTime",
+    "bGuests",
+    "bTotal",
+    "bReference",
+    "bNotes"
+  ].forEach(id=>{
+    document.getElementById(id).value="";
+  });
+
+  document.getElementById("bAdvance").value=0;
+  document.getElementById("bEvent").value="Marriage";
+  document.getElementById("bSlot").value="Afternoon";
+  document.getElementById("bSource").value="Cash";
+
+}
+
+
+/* =========================
+   SAVE BOOKING
+========================= */
+
+function saveBooking(){
+
+  let name =
+    document.getElementById("bName").value.trim();
+
+  let phone =
+    document.getElementById("bPhone").value.trim();
+
+  let event =
+    document.getElementById("bEvent").value;
+
+  let date =
+    document.getElementById("bDate").value;
+
+  let slot =
+    document.getElementById("bSlot").value;
+
+  let time =
+    document.getElementById("bTime").value;
+
+  let guests =
+    document.getElementById("bGuests").value;
+
+  let total =
+    Number(document.getElementById("bTotal").value || 0);
+
+  let advance =
+    Number(document.getElementById("bAdvance").value || 0);
+
+  let source =
+    document.getElementById("bSource").value;
+
+  let reference =
+    document.getElementById("bReference").value.trim();
+
+  let notesText =
+    document.getElementById("bNotes").value.trim();
+
+
+  if(!name){
+    alert("Please enter customer name.");
+    return;
+  }
+
+  if(!phone){
+    alert("Please enter phone number.");
+    return;
+  }
+
+  if(!date){
+    alert("Please select event date.");
+    return;
+  }
+
+  if(total < 0 || advance < 0){
+    alert("Amount cannot be negative.");
+    return;
+  }
+
+  if(advance > total){
+    alert("Advance cannot be more than total amount.");
+    return;
+  }
+
+
+  /* PREVENT SAME DATE + SAME SLOT */
+
+  let duplicate =
+    bookings.find(x =>
+      x.date === date &&
+      x.slot === slot &&
+      x.id !== editId
+    );
+
+  if(duplicate){
+
+    alert(
+      "This time slot is already booked on this date.\n\n" +
+      "You can use the other slot."
+    );
+
+    return;
+  }
+
+
+  let booking={
+
+    id: editId || Date.now(),
+
+    name:name,
+
+    phone:phone,
+
+    event:event,
+
+    date:date,
+
+    slot:slot,
+
+    time:time,
+
+    guests:guests,
+
+    total:total,
+
+    advance:advance,
+
+    balance:Math.max(0,total-advance),
+
+    source:source,
+
+    reference:reference,
+
+    notes:notesText,
+
+    createdAt:new Date().toISOString()
+
+  };
+
+
+  if(editId){
+
+    let index =
+      bookings.findIndex(x => x.id === editId);
+
+    if(index !== -1){
+      bookings[index]=booking;
+    }
+
+  }else{
+
+    bookings.push(booking);
+
+  }
+
+
+  saveData();
+
+  closeBooking();
+
+  updateUI();
+
+  alert("Booking saved successfully!");
+
+}
+
+
+/* =========================
+   EDIT / DELETE
+========================= */
+
+function editBooking(id){
+
+  openBooking(id);
+
+}
+
+
+function deleteBooking(id){
+
+  if(!confirm("Delete this booking?")) return;
+
+  bookings =
+    bookings.filter(x => x.id !== id);
+
+  payments =
+    payments.filter(p => Number(p.bookingId) !== Number(id));
+
+  saveData();
+
+  updateUI();
+
+}
+
+
+/* =========================
+   BOOKING LIST
+========================= */
+
+function renderBookings(){
+
+  let box =
+    document.getElementById("bookingList");
+
+  let search =
+    (document.getElementById("bookingSearch")?.value || "")
+    .toLowerCase();
+
+  let list =
+    bookings.filter(b =>
+      b.name.toLowerCase().includes(search) ||
+      b.phone.toLowerCase().includes(search)
+    );
+
+  list.sort((a,b)=>
+    a.date.localeCompare(b.date)
+  );
+
+
+  if(!list.length){
+
+    box.innerHTML=
+      '<div class="empty">No bookings found.</div>';
+
+    return;
+
+  }
+
+
+  box.innerHTML = list.map(b=>{
+
+    let status =
+      b.balance <= 0 ? "Paid" : "Pending";
+
+    return `
+
+      <div class="card" style="margin-bottom:12px">
+
+        <h3>${escapeHTML(b.name)}</h3>
+
+        <p>📞 ${escapeHTML(b.phone)}</p>
+
+        <p>🎉 ${escapeHTML(b.event)}</p>
+
+        <p>📅 ${formatDate(b.date)}</p>
+
+        <p>🕐 ${escapeHTML(b.slot)}
+          ${b.time ? " - "+escapeHTML(b.time) : ""}
+        </p>
+
+        <p>👥 Guests: ${b.guests || 0}</p>
+
+        <hr style="margin:10px 0;border:0;border-top:1px solid #eee">
+
+        <p>Total:
+          <b>${money(b.total)}</b>
+        </p>
+
+        <p>Advance:
+          <b>${money(b.advance)}</b>
+        </p>
+
+        <p>Balance:
+          <b>${money(b.balance)}</b>
+        </p>
+
+        <p>
+          <span class="badge ${status==="Paid"?"paid":"pending"}">
+            ${status}
+          </span>
+        </p>
+
+        <br>
+
+        <button class="success"
+          onclick="openPayment(${b.id})">
+          + Payment
+        </button>
+
+        <button class="secondary"
+          onclick="showPaymentHistory(${b.id})">
+          Payment History
+        </button>
+
+        <button class="secondary"
+          onclick="editBooking(${b.id})">
+          Edit
+        </button>
+
+        <button class="danger"
+          onclick="deleteBooking(${b.id})">
+          Delete
+        </button>
+
+      </div>
+
+    `;
+
+  }).join("");
+
+}
+
+
+/* =========================
+   CALENDAR
+========================= */
+
+function changeMonth(amount){
+
+  currentMonth += amount;
+
+  if(currentMonth > 11){
+
+    currentMonth=0;
+    currentYear++;
+
+  }
+
+  if(currentMonth < 0){
+
+    currentMonth=11;
+    currentYear--;
+
+  }
+
+  renderCalendar();
+
+}
+
+
+function renderCalendar(){
+
+  let calendar =
+    document.getElementById("calendar");
+
+  let title =
+    document.getElementById("monthTitle");
+
+
+  let date =
+    new Date(currentYear,currentMonth,1);
+
+  let monthName =
+    date.toLocaleString("en-IN",{
+      month:"long",
+      year:"numeric"
+    });
+
+  title.innerText=monthName;
+
+
+  let firstDay =
+    date.getDay();
+
+  let days =
+    new Date(
+      currentYear,
+      currentMonth+1,
+      0
+    ).getDate();
+
+
+  let html="";
+
+  [
+    "Sun",
+    "Mon",
+    "Tue",
+    "Wed",
+    "Thu",
+    "Fri",
+    "Sat"
+  ].forEach(d=>{
+    html +=
+      `<div class="day-name">${d}</div>`;
+  });
+
+
+  for(let i=0;i<firstDay;i++){
+
+    html +=
+      `<div class="day empty"></div>`;
+
+  }
+
+
+  for(let day=1;day<=days;day++){
+
+    let dateString =
+      currentYear + "-" +
+      String(currentMonth+1).padStart(2,"0") + "-" +
+      String(day).padStart(2,"0");
+
+
+    let dayBookings =
+      bookings.filter(b =>
+        b.date === dateString
+      );
+
+
+    html += `
+      <div class="day ${dayBookings.length?"booked":""}"
+           onclick="calendarDay('${dateString}')">
+
+        <strong>${day}</strong>
+
+        ${
+          dayBookings.map(b=>
+            `<span class="slot">
+              ${escapeHTML(b.slot)}
+            </span>`
+          ).join("")
+        }
+
+      </div>
+    `;
+
+  }
+
+
+  calendar.innerHTML=html;
+
+}
+
+
+function calendarDay(date){
+
+  let list =
+    bookings.filter(b=>b.date===date);
+
+  if(!list.length){
+
+    openBooking();
+
+    document.getElementById("bDate").value=date;
+
+    return;
+
+  }
+
+  let text =
+    list.map(b=>
+      `${b.slot}: ${b.name} (${b.event})`
+    ).join("\n");
+
+  alert(
+    formatDate(date) +
+    "\n\n" +
+    text
+  );
+
+}
+
+
+/* =========================
+   UPCOMING
+========================= */
+
+function renderUpcoming(){
+
+  let today =
+    new Date().toISOString().split("T")[0];
+
+  let list =
+    bookings
+      .filter(b=>b.date>=today)
+      .sort((a,b)=>a.date.localeCompare(b.date))
+      .slice(0,5);
+
+
+  let box =
+    document.getElementById("upcoming");
+
+
+  if(!list.length){
+
+    box.innerHTML=
+      '<div class="empty">No upcoming bookings.</div>';
+
+    return;
+
+  }
+
+
+  box.innerHTML=list.map(b=>`
+
+    <div class="card" style="margin-bottom:10px">
+
+      <b>${escapeHTML(b.name)}</b>
+
+      <p>
+        ${formatDate(b.date)}
+        · ${escapeHTML(b.slot)}
+      </p>
+
+      <p>${escapeHTML(b.event)}</p>
+
+    </div>
+
+  `).join("");
+
+}
+
+
+/* =========================
+   CUSTOMERS
+========================= */
+
+function renderCustomers(){
+
+  let box = document.getElementById("customerList");
+  if(!box) return;
+
+  let search =
+    (document.getElementById("customerSearch")?.value || "")
+    .trim()
+    .toLowerCase();
+
+  let map = {};
+
+  bookings.forEach(b => {
+
+    let phone = String(b.phone || "").trim();
+    let key = phone || String(b.name || "").trim().toLowerCase();
+
+    if(!key) return;
+
+    if(!map[key]){
+      map[key] = {
+        name:b.name || "Unknown",
+        phone:phone,
+        bookings:[]
+      };
+    }
+
+    if(b.name) map[key].name = b.name;
+    if(phone) map[key].phone = phone;
+
+    map[key].bookings.push(b);
+
+  });
+
+  let list = Object.values(map);
+
+  if(search){
+    list = list.filter(c =>
+      String(c.name).toLowerCase().includes(search) ||
+      String(c.phone).toLowerCase().includes(search)
+    );
+  }
+
+  list.sort((a,b)=>
+    String(a.name).localeCompare(String(b.name))
+  );
+
+  if(!list.length){
+
+    box.innerHTML =
+      '<div class="empty">No customers found.</div>';
+
+    return;
+
+  }
+
+  box.innerHTML = list.map(c => {
+
+    let total = c.bookings.reduce(
+      (sum,b)=>sum+Number(b.total||0),0
+    );
+
+    let paid = c.bookings.reduce(
+      (sum,b)=>sum+getPaidAmount(b),0
+    );
+
+    let balance = Math.max(0,total-paid);
+
+    let key = encodeURIComponent(
+      c.phone || c.name
+    );
+
+    return `
+
+      <div class="card"
+           style="margin-bottom:12px;cursor:pointer"
+           onclick="showCustomerDetails('${key}')">
+
+        <h3>${escapeHTML(c.name)}</h3>
+
+        <p>📞 ${escapeHTML(c.phone || "No phone")}</p>
+
+        <p>📅 Bookings: <b>${c.bookings.length}</b></p>
+
+        <p>💰 Total Business: <b>${money(total)}</b></p>
+
+        <p>✅ Total Paid: <b>${money(paid)}</b></p>
+
+        <p>⏳ Balance: <b>${money(balance)}</b></p>
+
+        <br>
+
+        <button class="secondary"
+                onclick="event.stopPropagation();showCustomerDetails('${key}')">
+          View Details
+        </button>
+
+      </div>
+
+    `;
+
+  }).join("");
+
+}
+
+
+function showCustomerDetails(key){
+
+  key = decodeURIComponent(key);
+
+  let customer = null;
+
+  Object.values(
+    bookings.reduce((map,b)=>{
+
+      let phone = String(b.phone || "").trim();
+      let k = phone || String(b.name || "").trim().toLowerCase();
+
+      if(!k) return map;
+
+      if(!map[k]){
+        map[k] = {
+          name:b.name || "Unknown",
+          phone:phone,
+          bookings:[]
+        };
+      }
+
+      map[k].bookings.push(b);
+
+      return map;
+
+    },{})
+  ).forEach(c=>{
+
+    if((c.phone || c.name) === key){
+      customer = c;
+    }
+
+  });
+
+  if(!customer) return;
+
+  let total = customer.bookings.reduce(
+    (sum,b)=>sum+Number(b.total||0),0
+  );
+
+  let paid = customer.bookings.reduce(
+    (sum,b)=>sum+getPaidAmount(b),0
+  );
+
+  let balance = Math.max(0,total-paid);
+
+  let body = document.getElementById("customerDetailsBody");
+
+  body.innerHTML = `
+
+    <div class="card" style="margin-bottom:12px">
+
+      <h3>${escapeHTML(customer.name)}</h3>
+
+      <p>📞 ${escapeHTML(customer.phone || "No phone")}</p>
+
+      <hr style="margin:12px 0;border:0;border-top:1px solid #eee">
+
+      <p>Total Bookings: <b>${customer.bookings.length}</b></p>
+      <p>Total Business: <b>${money(total)}</b></p>
+      <p>Total Paid: <b>${money(paid)}</b></p>
+      <p>Total Balance: <b>${money(balance)}</b></p>
+
+    </div>
+
+    <h3>Event History</h3>
+
+    <br>
+
+    ${customer.bookings
+      .slice()
+      .sort((a,b)=>b.date.localeCompare(a.date))
+      .map(b=>`
+
+        <div class="card" style="margin-bottom:10px">
+
+          <h3>${escapeHTML(b.event)}</h3>
+
+          <p>📅 ${formatDate(b.date)}</p>
+
+          <p>🕐 ${escapeHTML(b.slot)}
+             ${b.time ? " - "+escapeHTML(b.time) : ""}
+          </p>
+
+          <p>💰 Total: <b>${money(b.total)}</b></p>
+
+          <p>✅ Paid: <b>${money(getPaidAmount(b))}</b></p>
+
+          <p>⏳ Balance:
+             <b>${money(Math.max(0,Number(b.total||0)-getPaidAmount(b)))}</b>
+          </p>
+
+          <br>
+
+          <button class="success"
+                  onclick="openPayment(${b.id});closeCustomerDetails()">
+            + Payment
+          </button>
+
+          <button class="secondary"
+                  onclick="showPaymentHistory(${b.id});closeCustomerDetails()">
+            Payment History
+          </button>
+
+        </div>
+
+      `).join("")}
+
+  `;
+
+  document.getElementById("customerDetailsModal")
+    .style.display="block";
+
+}
+
+
+function closeCustomerDetails(){
+
+  document.getElementById("customerDetailsModal")
+    .style.display="none";
+
+}
+
+
+/* =========================
+   PAYMENTS
+========================= */
+
+function getBookingPayments(bookingId){
+  return payments
+    .filter(p => Number(p.bookingId) === Number(bookingId))
+    .sort((a,b) => b.date.localeCompare(a.date));
+}
+
+function getPaidAmount(booking){
+  let history = getBookingPayments(booking.id);
+  if(history.length){
+    return history.reduce((sum,p) => sum + Number(p.amount || 0), 0);
+  }
+  return Number(booking.advance || 0);
+}
+
+function syncBookingPaymentTotals(booking){
+  let paid = getPaidAmount(booking);
+  booking.advance = paid;
+  booking.balance = Math.max(0, Number(booking.total || 0) - paid);
+}
+
+function openPayment(bookingId){
+  let b = bookings.find(x => Number(x.id) === Number(bookingId));
+  if(!b) return;
+
+  paymentBookingId = b.id;
+  paymentEditId = null;
+
+  document.getElementById("paymentTitle").innerText = "Add Payment";
+  document.getElementById("pAmount").value = "";
+  document.getElementById("pDate").value = new Date().toISOString().split("T")[0];
+  document.getElementById("pSource").value = "Cash";
+  document.getElementById("pReference").value = "";
+  document.getElementById("pNotes").value = "";
+
+  let paid = getPaidAmount(b);
+  let balance = Math.max(0, Number(b.total || 0) - paid);
+
+  document.getElementById("paymentBookingInfo").innerHTML =
+    "<b>" + escapeHTML(b.name) + "</b><br>" +
+    "Total: " + money(b.total) +
+    " &nbsp; | &nbsp; Paid: " + money(paid) +
+    " &nbsp; | &nbsp; Balance: " + money(balance);
+
+  document.getElementById("pAmount").max = balance;
+  document.getElementById("paymentModal").style.display = "block";
+}
+
+function editPayment(paymentId){
+  let p = payments.find(x => Number(x.id) === Number(paymentId));
+  if(!p) return;
+
+  let b = bookings.find(x => Number(x.id) === Number(p.bookingId));
+  if(!b) return;
+
+  paymentBookingId = b.id;
+  paymentEditId = p.id;
+
+  document.getElementById("paymentTitle").innerText = "Edit Payment";
+  document.getElementById("pAmount").value = p.amount;
+  document.getElementById("pDate").value = p.date;
+  document.getElementById("pSource").value = p.source || "Cash";
+  document.getElementById("pReference").value = p.reference || "";
+  document.getElementById("pNotes").value = p.notes || "";
+
+  let otherPaid = getBookingPayments(b.id)
+    .filter(x => Number(x.id) !== Number(p.id))
+    .reduce((sum,x) => sum + Number(x.amount || 0), 0);
+
+  document.getElementById("pAmount").max =
+    Math.max(0, Number(b.total || 0) - otherPaid);
+
+  document.getElementById("paymentBookingInfo").innerHTML =
+    "<b>" + escapeHTML(b.name) + "</b><br>" +
+    "Total: " + money(b.total) +
+    " &nbsp; | &nbsp; Other payments: " + money(otherPaid);
+
+  document.getElementById("paymentModal").style.display = "block";
+}
+
+function savePayment(){
+  let b = bookings.find(x => Number(x.id) === Number(paymentBookingId));
+  if(!b) return;
+
+  let amount = Number(document.getElementById("pAmount").value || 0);
+  let date = document.getElementById("pDate").value;
+  let source = document.getElementById("pSource").value;
+  let reference = document.getElementById("pReference").value.trim();
+  let notesText = document.getElementById("pNotes").value.trim();
+
+  if(amount <= 0){
+    alert("Enter a valid payment amount.");
+    return;
+  }
+  if(!date){
+    alert("Please select payment date.");
+    return;
+  }
+
+  let otherPaid = getBookingPayments(b.id)
+    .filter(x => Number(x.id) !== Number(paymentEditId))
+    .reduce((sum,x) => sum + Number(x.amount || 0), 0);
+
+  if(otherPaid + amount > Number(b.total || 0)){
+    alert("Payment cannot be more than the remaining balance.");
+    return;
+  }
+
+  let payment = {
+    id: paymentEditId || Date.now(),
+    bookingId: b.id,
+    amount: amount,
+    date: date,
+    source: source,
+    reference: reference,
+    notes: notesText,
+    createdAt: new Date().toISOString()
+  };
+
+  if(paymentEditId){
+    let i = payments.findIndex(x => Number(x.id) === Number(paymentEditId));
+    if(i !== -1) payments[i] = payment;
+  }else{
+    payments.push(payment);
+  }
+
+  syncBookingPaymentTotals(b);
+  saveData();
+  closePayment();
+  updateUI();
+  alert("Payment saved successfully!");
+}
+
+function deletePayment(paymentId){
+  if(!confirm("Delete this payment?")) return;
+
+  let p = payments.find(x => Number(x.id) === Number(paymentId));
+  if(!p) return;
+
+  payments = payments.filter(x => Number(x.id) !== Number(paymentId));
+
+  let b = bookings.find(x => Number(x.id) === Number(p.bookingId));
+  if(b) syncBookingPaymentTotals(b);
+
+  saveData();
+  updateUI();
+  showPaymentHistory(p.bookingId);
+}
+
+function showPaymentHistory(bookingId){
+  let b = bookings.find(x => Number(x.id) === Number(bookingId));
+  if(!b) return;
+
+  let history = getBookingPayments(bookingId);
+  let paid = getPaidAmount(b);
+  let box = document.getElementById("paymentHistory");
+
+  let header =
+    '<div class="note" style="background:#f5efff">' +
+    '<b>' + escapeHTML(b.name) + '</b><br>' +
+    'Total: ' + money(b.total) +
+    ' &nbsp; | &nbsp; Paid: ' + money(paid) +
+    ' &nbsp; | &nbsp; Balance: ' +
+    money(Math.max(0, Number(b.total || 0) - paid)) +
+    '</div>';
+
+  if(!history.length){
+    box.innerHTML = header +
+      '<div class="empty">No payments recorded yet.</div>';
+  }else{
+    box.innerHTML = header + history.map(p => `
+      <div class="card" style="margin-bottom:10px">
+        <h3>${money(p.amount)}</h3>
+        <p>📅 ${formatDate(p.date)}</p>
+        <p>💳 ${escapeHTML(p.source || "Other")}</p>
+        ${p.reference ? `<p>🔖 ${escapeHTML(p.reference)}</p>` : ""}
+        ${p.notes ? `<p>📝 ${escapeHTML(p.notes)}</p>` : ""}
+        <br>
+        ${p.id !== null && p.id !== undefined ? `<button class="primary" onclick="printReceipt(${p.id})">🧾 Print Receipt</button>` : ""}
+        <button class="secondary" onclick="editPayment(${p.id})">Edit</button>
+        <button class="danger" onclick="deletePayment(${p.id})">Delete</button>
+      </div>
+    `).join("");
+  }
+
+  document.getElementById("paymentHistoryModal").style.display = "block";
+}
+
+function printReceipt(paymentId){
+  let p = payments.find(x => Number(x.id) === Number(paymentId));
+  if(!p) return;
+
+  let b = bookings.find(x => Number(x.id) === Number(p.bookingId));
+  if(!b) return;
+
+  let paid = getPaidAmount(b);
+  let balance = Math.max(0, Number(b.total || 0) - paid);
+  let receiptNo = "MC-" + String(p.id).slice(-8);
+
+  let w = window.open("", "_blank", "width=700,height=800");
+  if(!w){
+    alert("Please allow pop-ups to print the receipt.");
+    return;
+  }
+
+  w.document.write(`
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <title>M Convention Receipt</title>
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <style>
+        *{box-sizing:border-box}
+        body{font-family:Arial,sans-serif;background:#f3f3f3;margin:0;padding:30px;color:#222}
+        .receipt{width:100%;max-width:620px;margin:auto;background:#fff;padding:32px;border:1px solid #ddd}
+        .head{text-align:center;border-bottom:2px solid #222;padding-bottom:18px;margin-bottom:20px}
+        .head h1{margin:0;font-size:30px;letter-spacing:1px}
+        .head p{margin:6px 0 0;color:#666}
+        .row{display:flex;justify-content:space-between;gap:20px;padding:9px 0;border-bottom:1px dashed #ccc}
+        .label{color:#666}.value{font-weight:600;text-align:right}
+        .amount{font-size:24px;text-align:center;margin:22px 0;padding:16px;border:2px solid #222}
+        .total{margin-top:18px;padding-top:12px;border-top:2px solid #222}
+        .footer{text-align:center;margin-top:28px;color:#666;font-size:13px}
+        .print{display:block;margin:20px auto 0;padding:11px 22px;border:0;background:#222;color:#fff;border-radius:6px;font-size:15px;cursor:pointer}
+        @media print{body{background:#fff;padding:0}.receipt{border:0;max-width:none}.print{display:none}}
+      </style>
+    </head>
+    <body>
+      <div class="receipt">
+        <div class="head">
+          <h1>M CONVENTION</h1>
+          <p>Payment Receipt</p>
+        </div>
+
+        <div class="row"><span class="label">Receipt No.</span><span class="value">${escapeHTML(receiptNo)}</span></div>
+        <div class="row"><span class="label">Payment Date</span><span class="value">${escapeHTML(formatDate(p.date))}</span></div>
+        <div class="row"><span class="label">Customer Name</span><span class="value">${escapeHTML(b.name)}</span></div>
+        <div class="row"><span class="label">Phone</span><span class="value">${escapeHTML(b.phone)}</span></div>
+        <div class="row"><span class="label">Event</span><span class="value">${escapeHTML(b.event)}</span></div>
+        <div class="row"><span class="label">Event Date</span><span class="value">${escapeHTML(formatDate(b.date))}</span></div>
+        <div class="row"><span class="label">Payment Mode</span><span class="value">${escapeHTML(p.source || "Other")}</span></div>
+        ${p.reference ? `<div class="row"><span class="label">Reference</span><span class="value">${escapeHTML(p.reference)}</span></div>` : ""}
+
+        <div class="amount">Payment Received: <b>${money(p.amount)}</b></div>
+
+        <div class="row"><span class="label">Total Event Amount</span><span class="value">${money(b.total)}</span></div>
+        <div class="row total"><span class="label">Total Paid</span><span class="value">${money(paid)}</span></div>
+        <div class="row"><span class="label">Remaining Balance</span><span class="value">${money(balance)}</span></div>
+
+        ${p.notes ? `<div style="margin-top:18px"><b>Notes</b><p>${escapeHTML(p.notes)}</p></div>` : ""}
+        <div class="footer">Thank you for choosing M Convention</div>
+        <button class="print" onclick="window.print()">🖨 Print / Save as PDF</button>
+      </div>
+    </body>
+    </html>
+  `);
+
+  w.document.close();
+  w.focus();
+}
+
+function closePayment(){
+  document.getElementById("paymentModal").style.display = "none";
+  paymentBookingId = null;
+  paymentEditId = null;
+}
+
+function closePaymentHistory(){
+  document.getElementById("paymentHistoryModal").style.display = "none";
+}
+
+
+/* =========================
+   STAFF MANAGEMENT
+========================= */
+let staff = JSON.parse(localStorage.getItem("mConventionStaff") || "[]");
+let attendance = JSON.parse(localStorage.getItem("mConventionAttendance") || "[]");
+let staffEditId = null;
+let attendanceStaffId = null;
+
+function saveStaffData(){
+  localStorage.setItem("mConventionStaff", JSON.stringify(staff));
+  localStorage.setItem("mConventionAttendance", JSON.stringify(attendance));
+}
+function openStaff(id=null){
+  staffEditId=id;
+  document.getElementById("staffModal").style.display="block";
+  if(id){
+    let s=staff.find(x=>Number(x.id)===Number(id));
+    if(!s)return;
+    document.getElementById("staffTitle").innerText="Edit Staff";
+    document.getElementById("sName").value=s.name||"";
+    document.getElementById("sPhone").value=s.phone||"";
+    document.getElementById("sAddress").value=s.address||"";
+    document.getElementById("sJoiningDate").value=s.joiningDate||"";
+    document.getElementById("sSalary").value=s.salary||0;
+    document.getElementById("sAdvance").value=s.advance||0;
+  }else{
+    document.getElementById("staffTitle").innerText="Add Staff";
+    document.getElementById("sName").value="";
+    document.getElementById("sPhone").value="";
+    document.getElementById("sAddress").value="";
+    document.getElementById("sJoiningDate").value=new Date().toISOString().split("T")[0];
+    document.getElementById("sSalary").value="";
+    document.getElementById("sAdvance").value=0;
+  }
+}
+function closeStaff(){document.getElementById("staffModal").style.display="none";staffEditId=null;}
+function saveStaff(){
+  let name=document.getElementById("sName").value.trim();
+  let phone=document.getElementById("sPhone").value.trim();
+  let address=document.getElementById("sAddress").value.trim();
+  let joiningDate=document.getElementById("sJoiningDate").value;
+  let salary=Number(document.getElementById("sSalary").value||0);
+  let advance=Number(document.getElementById("sAdvance").value||0);
+  if(!name){alert("Please enter staff name.");return;}
+  if(salary<0||advance<0){alert("Amount cannot be negative.");return;}
+  let item={id:staffEditId||Date.now(),name,phone,address,joiningDate,salary,advance,createdAt:new Date().toISOString()};
+  if(staffEditId){
+    let i=staff.findIndex(x=>Number(x.id)===Number(staffEditId));
+    if(i!==-1)staff[i]=item;
+  }else staff.push(item);
+  saveStaffData();closeStaff();updateUI();alert("Staff saved successfully!");
+}
+function deleteStaff(id){
+  if(!confirm("Delete this staff member?"))return;
+  staff=staff.filter(x=>Number(x.id)!==Number(id));
+  attendance=attendance.filter(x=>Number(x.staffId)!==Number(id));
+  saveStaffData();updateUI();
+}
+function renderStaff(){
+  let box=document.getElementById("staffList");if(!box)return;
+  if(!staff.length){box.innerHTML='<div class="empty">No staff added yet.</div>';return;}
+  box.innerHTML=staff.map(s=>`
+    <div class="card" style="margin-bottom:12px">
+      <h3>👨‍💼 ${escapeHTML(s.name)}</h3>
+      <p>📞 ${escapeHTML(s.phone||"No phone")}</p>
+      <p>📍 ${escapeHTML(s.address||"No address")}</p>
+      <p>📅 Joining: ${s.joiningDate?formatDate(s.joiningDate):"Not set"}</p>
+      <p>💰 Monthly Salary: <b>${money(s.salary)}</b></p>
+      <p>💳 Advance: <b>${money(s.advance)}</b></p><br>
+      <button class="success" onclick="openAttendance(${s.id})">📋 Attendance</button>
+      <button class="secondary" onclick="openStaff(${s.id})">Edit</button>
+      <button class="danger" onclick="deleteStaff(${s.id})">Delete</button>
+    </div>`).join("");
+}
+function daysInMonth(month){
+  if(!month)return 0;let p=month.split("-").map(Number);return new Date(p[0],p[1],0).getDate();
+}
+function getStaffAttendance(staffId,month){return attendance.find(x=>Number(x.staffId)===Number(staffId)&&x.month===month);}
+function openAttendance(staffId){
+  let s=staff.find(x=>Number(x.id)===Number(staffId));if(!s)return;
+  attendanceStaffId=s.id;
+  document.getElementById("attendanceTitle").innerText="Attendance - "+s.name;
+  let d=new Date();document.getElementById("aMonth").value=d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0");
+  document.getElementById("attendanceModal").style.display="block";renderAttendance();
+}
+function closeAttendance(){document.getElementById("attendanceModal").style.display="none";attendanceStaffId=null;}
+function renderAttendance(){
+  let body=document.getElementById("attendanceBody");if(!body||!attendanceStaffId)return;
+  let month=document.getElementById("aMonth").value,days=daysInMonth(month);
+  let saved=getStaffAttendance(attendanceStaffId,month),records=saved?saved.records:{};
+  let present=Object.values(records).filter(x=>x==="Present").length;
+  let s=staff.find(x=>Number(x.id)===Number(attendanceStaffId)),salary=Number(s?s.salary:0);
+  let earned=Math.round((days?salary/days:0)*present);
+  let html=`<div class="note" style="background:#f5efff"><b>Present:</b> ${present} &nbsp; | &nbsp; <b>Absent:</b> ${Object.values(records).filter(x=>x==="Absent").length} &nbsp; | &nbsp; <b>Estimated Salary:</b> ${money(earned)}</div>`;
+  for(let d=1;d<=days;d++){
+    let v=records[String(d)]||"Present";
+    html+=`<div style="display:grid;grid-template-columns:70px 1fr;gap:10px;align-items:center;margin-bottom:8px"><b>Day ${d}</b><select id="att_${d}"><option ${v==="Present"?"selected":""}>Present</option><option ${v==="Absent"?"selected":""}>Absent</option></select></div>`;
+  }
+  body.innerHTML=html;
+}
+function saveAttendance(){
+  if(!attendanceStaffId)return;
+  let month=document.getElementById("aMonth").value;if(!month){alert("Select month.");return;}
+  let days=daysInMonth(month),records={};
+  for(let d=1;d<=days;d++)records[String(d)]=document.getElementById("att_"+d).value;
+  let i=attendance.findIndex(x=>Number(x.staffId)===Number(attendanceStaffId)&&x.month===month);
+  let item={id:i>=0?attendance[i].id:Date.now(),staffId:attendanceStaffId,month,records,savedAt:new Date().toISOString()};
+  if(i>=0)attendance[i]=item;else attendance.push(item);
+  saveStaffData();renderAttendance();updateUI();alert("Attendance saved successfully!");
+}
+/* =========================
+   EXPENSES
+========================= */
+
+function openExpense(){
+
+  document.getElementById("expenseModal")
+    .style.display="block";
+
+  document.getElementById("ePurpose").value="";
+  document.getElementById("eAmount").value="";
+  document.getElementById("eDate").value=
+    new Date().toISOString().split("T")[0];
+
+}
+
+
+function closeExpense(){
+
+  document.getElementById("expenseModal")
+    .style.display="none";
+
+}
+
+
+function saveExpense(){
+
+  let purpose =
+    document.getElementById("ePurpose").value.trim();
+
+  let amount =
+    Number(document.getElementById("eAmount").value||0);
+
+  let date =
+    document.getElementById("eDate").value;
+
+  let source =
+    document.getElementById("eSource").value;
+
+  let status =
+    document.getElementById("eStatus").value;
+
+
+  if(!purpose){
+
+    alert("Enter expense purpose.");
+
+    return;
+
+  }
+
+  if(amount<=0){
+
+    alert("Enter valid amount.");
+
+    return;
+
+  }
+
+
+  expenses.push({
+
+    id:Date.now(),
+
+    purpose,
+
+    amount,
+
+    date,
+
+    source,
+
+    status
+
+  });
+
+
+  saveData();
+
+  closeExpense();
+
+  updateUI();
+
+  alert("Expense saved.");
+
+}
+
+
+function deleteExpense(id){
+
+  if(!confirm("Delete expense?")) return;
+
+  expenses =
+    expenses.filter(e=>e.id!==id);
+
+  saveData();
+
+  updateUI();
+
+}
+
+
+function renderExpenses(){
+
+  let box =
+    document.getElementById("expenseList");
+
+
+  if(!expenses.length){
+
+    box.innerHTML=
+      '<div class="empty">No expenses yet.</div>';
+
+    return;
+
+  }
+
+
+  let list =
+    [...expenses].sort((a,b)=>
+      b.date.localeCompare(a.date)
+    );
+
+
+  box.innerHTML=list.map(e=>`
+
+    <div class="card" style="margin-bottom:10px">
+
+      <h3>${escapeHTML(e.purpose)}</h3>
+
+      <p>📅 ${formatDate(e.date)}</p>
+
+      <p>💰 <b>${money(e.amount)}</b></p>
+
+      <p>Source: ${escapeHTML(e.source)}</p>
+
+      <p>Status:
+        <span class="badge ${
+          e.status==="Settled" ? "paid":"pending"
+        }">
+          ${e.status}
+        </span>
+      </p>
+
+      <br>
+
+      <button class="danger"
+        onclick="deleteExpense(${e.id})">
+        Delete
+      </button>
+
+    </div>
+
+  `).join("");
+
+}
+
+
+/* =========================
+   NOTES
+========================= */
+
+function addNote(){
+
+  let text =
+    document.getElementById("noteText")
+    .value.trim();
+
+
+  if(!text){
+
+    alert("Write a note first.");
+
+    return;
+
+  }
+
+
+  notes.unshift({
+
+    id:Date.now(),
+
+    text,
+
+    date:new Date().toISOString()
+
+  });
+
+
+  document.getElementById("noteText").value="";
+
+  saveData();
+
+  renderNotes();
+
+}
+
+
+function deleteNote(id){
+
+  notes =
+    notes.filter(n=>n.id!==id);
+
+  saveData();
+
+  renderNotes();
+
+}
+
+
+function renderNotes(){
+
+  let box =
+    document.getElementById("noteList");
+
+
+  if(!notes.length){
+
+    box.innerHTML=
+      '<div class="empty">No notes.</div>';
+
+    return;
+
+  }
+
+
+  box.innerHTML=notes.map(n=>`
+
+    <div class="note">
+
+      <p>${escapeHTML(n.text)}</p>
+
+      <br>
+
+      <small>
+        ${new Date(n.date).toLocaleString("en-IN")}
+      </small>
+
+      <br><br>
+
+      <button class="danger"
+        onclick="deleteNote(${n.id})">
+        Delete
+      </button>
+
+    </div>
+
+  `).join("");
+
+}
+
+
+/* =========================
+   REPORTS
+========================= */
+
+function renderReports(){
+
+  let total =
+    bookings.reduce(
+      (sum,b)=>sum+Number(b.total||0),0
+    );
+
+  let received =
+    bookings.reduce(
+      (sum,b)=>sum+getPaidAmount(b),0
+    );
+
+  let pending =
+    bookings.reduce(
+      (sum,b)=>sum+Number(b.balance||0),0
+    );
+
+  let exp =
+    expenses
+      .filter(e=>e.status==="Settled")
+      .reduce(
+        (sum,e)=>sum+Number(e.amount||0),0
+      );
+
+
+  document.getElementById("reportTotal")
+    .innerText=money(total);
+
+  document.getElementById("reportReceived")
+    .innerText=money(received);
+
+  document.getElementById("reportPending")
+    .innerText=money(pending);
+
+  document.getElementById("reportExpenses")
+    .innerText=money(exp);
+
+  document.getElementById("rIncome")
+    .innerText=money(received);
+
+  document.getElementById("rExpense")
+    .innerText=money(exp);
+
+  document.getElementById("rBalance")
+    .innerText=money(received-exp);
+
+}
+
+
+/* =========================
+   DASHBOARD
+========================= */
+
+function renderDashboard(){
+
+  let today =
+    new Date().toISOString().split("T")[0];
+
+
+  let now =
+    new Date();
+
+
+  let month =
+    now.getMonth();
+
+  let year =
+    now.getFullYear();
+
+
+  let todayCount =
+    bookings.filter(b=>b.date===today).length;
+
+
+  let monthCount =
+    bookings.filter(b=>{
+
+      let d=new Date(b.date);
+
+      return d.getMonth()===month &&
+             d.getFullYear()===year;
+
+    }).length;
+
+
+  let received =
+    bookings.reduce(
+      (s,b)=>s+Number(b.advance||0),0
+    );
+
+
+  let pending =
+    bookings.reduce(
+      (s,b)=>s+Number(b.balance||0),0
+    );
+
+
+  document.getElementById("todayCount")
+    .innerText=todayCount;
+
+  document.getElementById("monthCount")
+    .innerText=monthCount;
+
+  document.getElementById("receivedAmount")
+    .innerText=money(received);
+
+  document.getElementById("pendingAmount")
+    .innerText=money(pending);
+
+}
+
+
+/* =========================
+   UPDATE EVERYTHING
+========================= */
+
+function updateUI(){
+
+  saveData();
+
+  renderDashboard();
+
+  renderCalendar();
+
+  renderUpcoming();
+
+  renderBookings();
+
+  renderCustomers();
+
+  renderStaff();
+
+  renderExpenses();
+
+  renderReports();
+
+  renderNotes();
+
+}
+
+
+/* =========================
+   DATE
+========================= */
+
+function formatDate(date){
+
+  if(!date) return "";
+
+  let d =
+    new Date(date+"T00:00:00");
+
+  return d.toLocaleDateString(
+    "en-IN",
+    {
+      day:"2-digit",
+      month:"short",
+      year:"numeric"
+    }
+  );
+
+}
+
+
+/* =========================
+   SECURITY
+========================= */
+
+function escapeHTML(value){
+
+  return String(value ?? "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+
+}
+
+
+/* =========================
+   CLOSE MODAL OUTSIDE
+========================= */
+
+window.onclick=function(e){
+
+  if(
+    e.target ===
+    document.getElementById("bookingModal")
+  ){
+
+    closeBooking();
+
+  }
+
+  if(
+    e.target ===
+    document.getElementById("expenseModal")
+  ){
+
+    closeExpense();
+
+  }
+
+
+  if(
+    e.target ===
+    document.getElementById("customerDetailsModal")
+  ){
+    closeCustomerDetails();
+  }
+
+  if(e.target === document.getElementById("staffModal")){ closeStaff(); }
+  if(e.target === document.getElementById("attendanceModal")){ closeAttendance(); }
+
+  if(
+    e.target ===
+    document.getElementById("paymentModal")
+  ){
+
+    closePayment();
+
+  }
+
+  if(
+    e.target ===
+    document.getElementById("paymentHistoryModal")
+  ){
+
+    closePaymentHistory();
+
+  }
+
+};
+
+
+/* =========================
+   START APP
+========================= */
+
+updateUI();
+
+</script>
+
+</body>
+</html>
